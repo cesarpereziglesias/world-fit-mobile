@@ -13,6 +13,7 @@ import android.widget.ListView;
 import com.worldfit.worldfit.R;
 
 import com.worldfit.worldfit.fragment.dummy.DummyContent;
+import com.worldfit.worldfit.model.Challenge;
 
 /**
  * A fragment representing a list of Items.
@@ -26,7 +27,7 @@ public class ChallengeListFragment extends ListFragment {
     private Activity mParentActivity;
 
     private ListView mListChallenge;
-    private ListAdapter<Challenge> mChallengeAdapter;
+    //private ListAdapter<Challenge> mChallengeAdapter;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the

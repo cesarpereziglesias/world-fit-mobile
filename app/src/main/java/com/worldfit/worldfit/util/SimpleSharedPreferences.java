@@ -46,4 +46,9 @@ public class SimpleSharedPreferences {
         this.mEditor.putString(key, value);
         this.mEditor.commit();
     }
+
+    public void save(String key, long value) {
+        this.mEditor.putLong(key, value);
+        this.mEditor.commit();
+    }
 }

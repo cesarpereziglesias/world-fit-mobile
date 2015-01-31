@@ -1,21 +1,12 @@
 package com.worldfit.worldfit.fragment;
 
-import android.app.Activity;
-import android.content.IntentSender;
-import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.plus.Plus;
 import com.worldfit.worldfit.R;
-import com.worldfit.worldfit.util.FitApiWrapper;
 
 public class MainFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
