@@ -22,7 +22,7 @@ import com.worldfit.worldfit.util.FitApiWrapper;
 public class SyncFragment extends Fragment {
 
     private static final String TAG = "SyncFragment";
-    private Activity parentActivity;
+    private Activity mParentActivity;
 
     public static SyncFragment newInstance(String param1, String param2) {
         SyncFragment fragment = new SyncFragment();
@@ -54,7 +54,7 @@ public class SyncFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        parentActivity = activity;
+        mParentActivity = activity;
     }
 
 
