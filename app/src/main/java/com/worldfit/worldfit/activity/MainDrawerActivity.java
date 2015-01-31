@@ -25,8 +25,9 @@ public class MainDrawerActivity extends MaterialNavigationDrawer implements Mate
         user = User.readSharedUser(this);
 
         // add accounts
-        MaterialAccount account = new MaterialAccount(this.getResources(), user.getName(), user.getMail() , null, R.drawable.bamboo);
+        MaterialAccount account = new MaterialAccount(this.getResources(), user.getName(), user.getMail() , R.drawable.ic_avatar_male, R.drawable.bamboo);
         user.setAvatar(this, (ImageView) findViewById(R.id.user_photo));
+
         this.addAccount(account);
 
         // create sections

@@ -6,6 +6,7 @@ import android.util.Log;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
+import com.worldfit.worldfit.util.CircleTransform;
 import com.worldfit.worldfit.util.MD5Util;
 import com.worldfit.worldfit.util.SimpleSharedPreferences;
 
@@ -71,6 +72,8 @@ public class User {
     public void setAvatar(Context context, ImageView imageView) {
         String gravatarHash = MD5Util.md5Hex(this.mail);
         Log.d(TAG, "Download gravatar");
-        Picasso.with(context).load(AVATAR_URL+gravatarHash).into(imageView);
+        Picasso.with(context).load(AVATAR_URL+gravatarHash+"?s=200&d=mm")
+                .transform(new CircleTransform())
+                .into(imageView);
     }
 }
