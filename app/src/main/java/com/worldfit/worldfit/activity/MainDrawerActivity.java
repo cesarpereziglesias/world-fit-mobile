@@ -23,19 +23,20 @@ import it.neokree.materialnavigationdrawer.elements.listeners.MaterialAccountLis
 public class MainDrawerActivity extends MaterialNavigationDrawer implements MaterialAccountListener, Runnable, UsersManagerListener {
 
     private static User user;
-
+    private MaterialAccount mAccount;
     @Override
     public void init(Bundle savedInstanceState) {
 
         this.disableLearningPattern();
 
-        user = User.readSharedUser(this);
-
         // add accounts
-        MaterialAccount account = new MaterialAccount(this.getResources(), user.getName(), user.getMail() , R.drawable.ic_avatar_default, R.drawable.bamboo);
+        user = User.readSharedUser(this);
+        mAccount = new MaterialAccount(this.getResources(), user.getName(), user.getMail() , R.drawable.ic_avatar_default, R.drawable.bamboo);
+
         user.setAvatar(this, (ImageView) findViewById(R.id.user_photo));
+        this.addAccount(mAccount);
+
         FitApiWrapper.getInstance(this).connect(this);
-        this.addAccount(account);
 
         // create sections
         this.addSection(newSection(getString(R.string.resume), new MainFragment()));
@@ -70,6 +71,7 @@ public class MainDrawerActivity extends MaterialNavigationDrawer implements Mate
         String email = FitApiWrapper.getInstance(this).getSignedEmail();
         Log.d("Email", email);
         User user = new User(email);
+        user.saveInLocalShared(this);
         UsersManager usersManager = new UsersManager();
         usersManager.createUser(user, this);
     }
@@ -82,5 +84,14 @@ public class MainDrawerActivity extends MaterialNavigationDrawer implements Mate
     @Override
     public void onCreateUser(String userHash) {
         Log.d("Email", userHash);
+        setUser();
+    }
+
+    private void setUser(){
+        user = User.readSharedUser(this);
+        user.setAvatar(this, (ImageView) findViewById(R.id.user_photo));
+        mAccount.setTitle(user.getName());
+        mAccount.setSubTitle(user.getMail());
+        notifyAccountDataChanged();
     }
 }
