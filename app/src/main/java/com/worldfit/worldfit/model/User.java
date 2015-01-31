@@ -45,6 +45,18 @@ public class User {
         return name;
     }
 
+    public void setHash(String hash) {
+        this.hash = hash;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
+
 
     public static User readSharedUser(Context context) {
         SimpleSharedPreferences sharedData = SimpleSharedPreferences.getSimpleSharedPreference(context);
