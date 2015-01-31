@@ -6,5 +6,6 @@
     <string name="sync_button">Synchronize</string>
     <string name="hello_blank_fragment">hello main fragment</string>
     <string name="resume">myResume</string>
+    <string name="challenge">Challenge</string>
 
 </resources>
