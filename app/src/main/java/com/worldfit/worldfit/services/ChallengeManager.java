@@ -68,5 +68,5 @@ public class ChallengeManager extends ServiceManager {
         }.execute();
     }
 
-   
+
 }

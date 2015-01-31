@@ -4,11 +4,8 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.worldfit.worldfit.R;
@@ -17,7 +14,6 @@ import com.worldfit.worldfit.model.Challenge;
 import com.worldfit.worldfit.services.ChallengeManager;
 import com.worldfit.worldfit.services.listeners.ChallengesManagerListener;
 
-import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,9 +22,9 @@ import java.util.List;
  * <p/>
  * <p/>
  */
-public class ChallengeListFragment extends Fragment implements ChallengesManagerListener {
+public class ChallengeCreateFragment extends Fragment implements ChallengesManagerListener {
 
-    private static final String TAG = ChallengeListFragment.class.getSimpleName();
+    private static final String TAG = ChallengeCreateFragment.class.getSimpleName();
 
     private Activity mParentActivity;
 
@@ -39,13 +35,12 @@ public class ChallengeListFragment extends Fragment implements ChallengesManager
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public ChallengeListFragment() {
+    public ChallengeCreateFragment() {
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
 
     }
 
@@ -53,25 +48,11 @@ public class ChallengeListFragment extends Fragment implements ChallengesManager
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View mainView = inflater.inflate(R.layout.fragment_challenge_list, container, false);
-
-        this.mListChallenge = (ListView) mainView.findViewById(R.id.list_challenges);
-        this.mChallengeAdapter = new ChallengeListAdapter(mParentActivity, mChallenges);
-        setup();
-        initEvents();
+        View mainView = inflater.inflate(R.layout.fragment_challenge_create, container, false);
         return mainView;
     }
 
 
-    private void setup() {
-        this.mListChallenge.setAdapter(this.mChallengeAdapter);
-        ChallengeManager challengeManager = new ChallengeManager();
-        challengeManager.getChallengesList(this);
-    }
-
-    private void initEvents() {
-
-    }
 
 
     @Override
@@ -86,17 +67,9 @@ public class ChallengeListFragment extends Fragment implements ChallengesManager
         mParentActivity = null;
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        // TODO Add your menu entries here
-        super.onCreateOptionsMenu(menu, inflater);
-    }
 
     @Override
     public void onGetChallenges(List<Challenge> challenges) {
-        this.mChallenges.clear();
-        this.mChallenges.addAll(challenges);
-        this.mChallengeAdapter.notifyDataSetChanged();
     }
 
     @Override
