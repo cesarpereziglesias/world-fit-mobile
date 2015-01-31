@@ -39,6 +39,8 @@ public class ChallengeActivity extends ActionBarActivity implements ChallengesMa
         this.mChallenge = Challenge.fromBundle(getIntent().getBundleExtra(BUNDLE_CHALLENGE));
         Log.d(TAG, mChallenge.toString());
 
+        this.mChallengeManager = new ChallengeManager();
+        this.mChallengeManager.getChallenge(this.mChallenge.getId(), this);
 
         initLayout();
     }
@@ -53,8 +55,7 @@ public class ChallengeActivity extends ActionBarActivity implements ChallengesMa
 
         this.mCalsification.setAdapter(this.mResultAdapter);
 
-        this.mChallengeManager = new ChallengeManager();
-        this.mChallengeManager.getChallenge(this.mChallenge.getId(), this);
+
     }
 
 

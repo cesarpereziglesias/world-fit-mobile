@@ -78,6 +78,11 @@ public class ChallengeCreateFragment extends Fragment implements ChallengesManag
     }
 
     @Override
+    public void onSubscribe() {
+
+    }
+
+    @Override
     public void onGetChallenge(Challenge challenge) {
 
     }
