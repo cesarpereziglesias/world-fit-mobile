@@ -7,5 +7,8 @@
     <string name="resume">myResume</string>
     <string name="challenge">Challenge</string>
     <string name="synchronize">Synchronize</string>
+    <string name="title_activity_challenge">ChallengeActivity</string>
+
+    <string name="hello_world">Hello world!</string>
 
 </resources>
