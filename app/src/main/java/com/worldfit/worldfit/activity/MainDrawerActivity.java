@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import com.worldfit.worldfit.R;
 import com.worldfit.worldfit.fragment.MainFragment;
 import com.worldfit.worldfit.fragment.SyncFragment;
+import com.worldfit.worldfit.model.Activity;
 import com.worldfit.worldfit.model.User;
 import com.worldfit.worldfit.services.UsersManager;
 import com.worldfit.worldfit.services.listeners.UsersManagerListener;
@@ -71,10 +72,9 @@ public class MainDrawerActivity extends MaterialNavigationDrawer implements Mate
     public void run() {
         String email = FitApiWrapper.getInstance(this).getSignedEmail();
         Log.d("Email", email);
-        User user = new User(email);
-        user.saveInLocalShared(this);
+        mUser.setMail(email);
         UsersManager usersManager = new UsersManager();
-        usersManager.createUser(user, this);
+        usersManager.createUser(mUser, this);
     }
 
     @Override
@@ -85,7 +85,14 @@ public class MainDrawerActivity extends MaterialNavigationDrawer implements Mate
     @Override
     public void onCreateUser(String userHash) {
         Log.d("Email", userHash);
+        mUser.setHash(userHash);
+        mUser.saveInLocalShared(this);
         setUser();
+    }
+
+    @Override
+    public void onGetUserActivities(List<Activity> activities) {
+
     }
 
     private void setUser(){
