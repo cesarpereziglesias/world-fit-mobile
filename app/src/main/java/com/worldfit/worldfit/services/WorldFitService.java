@@ -36,7 +36,7 @@ public interface WorldFitService {
 
 
     @GET("/challenges/{id}")
-    List<Challenge> getChallenge(@Path("id") int id);
+    Challenge getChallenge(@Path("id") int id);
 
 
 }

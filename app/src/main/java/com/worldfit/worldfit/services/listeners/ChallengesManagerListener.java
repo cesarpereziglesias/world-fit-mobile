@@ -12,4 +12,5 @@ public interface ChallengesManagerListener {
 
     public void onCreateChallenge(String result);
 
+    void onGetChallenge(Challenge challenge);
 }

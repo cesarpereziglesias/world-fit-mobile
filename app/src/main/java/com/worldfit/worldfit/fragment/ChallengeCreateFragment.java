@@ -76,4 +76,9 @@ public class ChallengeCreateFragment extends Fragment implements ChallengesManag
     public void onCreateChallenge(String result) {
 
     }
+
+    @Override
+    public void onGetChallenge(Challenge challenge) {
+
+    }
 }
