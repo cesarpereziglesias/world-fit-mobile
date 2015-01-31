@@ -46,6 +46,23 @@ public class UsersManager extends ServiceManager {
         }.execute();
     }
 
+    public void getUserActivities(final String hash, final UsersManagerListener listener) {
+        new AsyncTask<Void, Void, List<Activity>>() {
+            @Override
+            protected List<Activity> doInBackground(Void... params) {
+                return mService.getUserActivities(hash);
+            }
+
+            @Override
+            protected void onPostExecute(List<Activity> activities) {
+
+                super.onPostExecute(activities);
+
+                listener.onGetUserActivities(activities);
+            }
+        }.execute();
+    }
+
     public void insertActivity(final String hash, final List<Activity> activities, final UsersManagerListener listener) {
         new AsyncTask<Void, Void, Void>() {
             @Override
