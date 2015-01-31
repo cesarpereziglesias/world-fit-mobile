@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.worldfit.worldfit.activity.ChallengeActivity">
 
-    <item android:id="@+id/actionsubscribe" android:title="@string/action_add_challenge"
+    <item android:id="@+id/action_subscribe" android:title="@string/action_add_challenge"
         android:icon="@android:drawable/ic_menu_add"
         app:showAsAction="always" />
 

@@ -4,24 +4,37 @@
     android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin" tools:context="com.worldfit.worldfit.fragment.ChallengeCreateFragment">
 
 
     <EditText
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/editText"
-        android:layout_weight="1" />
-
-    <DatePicker
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/beginDatePicker" />
+        android:id="@+id/challengeNameEditText"
+        android:hint="@string/challenge_name"/>
 
 
-    <DatePicker
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:inputType="date"
+        android:hint="YYYY/MM/DD"
+        android:ems="10"
+        android:id="@+id/beginDateEditText" />
+
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:inputType="date"
+        android:hint="YYYY/MM/DD"
+        android:ems="10"
+        android:id="@+id/endDateEditText" />
+
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/endDatePicker" />
+        android:text="@string/create"
+        android:id="@+id/createChallengeBtn" />
 
 </LinearLayout>

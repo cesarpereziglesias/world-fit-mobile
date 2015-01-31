@@ -16,5 +16,7 @@
     <string name="challenge_init_date">Initial date</string>
     <string name="action_add_challenge">New challange</string>
     <string name="challenge_name">Challenge name</string>
+    <string name="create">Create</string>
+    <string name="cancel">Cancel</string>
 
 </resources>

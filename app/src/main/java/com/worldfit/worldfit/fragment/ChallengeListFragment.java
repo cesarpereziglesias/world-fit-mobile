@@ -1,8 +1,12 @@
 package com.worldfit.worldfit.fragment;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.DialogFragment;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -106,8 +110,8 @@ public class ChallengeListFragment extends Fragment implements ChallengesManager
     public boolean onOptionsItemSelected(MenuItem item) {
         // handle item selection
         switch (item.getItemId()) {
-            case R.id.action_suscribe:
-
+            case R.id.action_subscribe:
+                Log.d(TAG, "wwwwwoot");
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
