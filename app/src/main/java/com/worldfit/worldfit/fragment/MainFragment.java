@@ -80,9 +80,9 @@ public class MainFragment extends Fragment implements UsersManagerListener {
         int i = 0;
         ArrayList<String> xVals = new ArrayList<String>();
         for(com.worldfit.worldfit.model.Activity activity: activities){
-
+            String date = activity.getDate();
             valsComp1.add(new BarEntry(activity.getValue(), i++));
-            xVals.add(activity.getDate());
+            xVals.add(date.substring(date.length()-2));
         }
         BarDataSet barDataSet = new BarDataSet(valsComp1, "Steps/Day");
 
