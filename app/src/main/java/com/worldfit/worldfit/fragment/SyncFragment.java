@@ -10,15 +10,20 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.worldfit.worldfit.R;
+import com.worldfit.worldfit.model.User;
+import com.worldfit.worldfit.services.UsersManager;
+import com.worldfit.worldfit.services.listeners.UsersManagerListener;
 import com.worldfit.worldfit.util.FitApiWrapper;
 import com.worldfit.worldfit.util.SimpleSharedPreferences;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 
-public class SyncFragment extends Fragment implements Runnable, ReceiverStepData {
+public class SyncFragment extends Fragment implements Runnable, ReceiverStepData, UsersManagerListener {
 
     private static final String TAG = "SyncFragment";
     private static final String LAST_SYNC_TIMESTAMP_KEY = "LAST_SYNC_TIMESTAMP";
@@ -80,32 +85,56 @@ public class SyncFragment extends Fragment implements Runnable, ReceiverStepData
         calendar.add(Calendar.MONTH, -1);
         long oneMonthBackFromNowTimestamp =  calendar.getTimeInMillis();
 
-        long lastSyncTimestamp = SimpleSharedPreferences
-                .getSimpleSharedPreference(mParentActivity)
-                .read(LAST_SYNC_TIMESTAMP_KEY, oneMonthBackFromNowTimestamp);
+        //long lastSyncTimestamp = SimpleSharedPreferences
+        //       .getSimpleSharedPreference(mParentActivity)
+        //        .read(LAST_SYNC_TIMESTAMP_KEY, oneMonthBackFromNowTimestamp);
 
 
-        Log.d(TAG, "last sync: " + lastSyncTimestamp);
         FitApiWrapper.getInstance(mParentActivity).
-                sendToReceiverUserStepsStartingFrom(lastSyncTimestamp, this);
+                sendToReceiverUserStepsStartingFrom(oneMonthBackFromNowTimestamp, this);
 
 
     }
 
     @Override
     public void sendData(HashMap<String, Integer> stepData) {
-        for(String key : stepData.keySet()){
-            Log.d(TAG,  key + "> " + stepData.get(key));
+        UsersManager usersManager = new UsersManager();
+        String stepsTag = com.worldfit.worldfit.model.Activity.TYPE_STEPS;
+        List<com.worldfit.worldfit.model.Activity> activities =
+                new ArrayList<com.worldfit.worldfit.model.Activity>();
+        for(String date : stepData.keySet()){
+            com.worldfit.worldfit.model.Activity activity =
+                    new com.worldfit.worldfit.model.Activity(stepsTag, date, stepData.get(date));
+
+
+
+            activities.add(activity);
         }
+        User user = User.readSharedUser(mParentActivity);
+        usersManager.insertActivity(user.getHash(), activities, this);
 
         Calendar current = Calendar.getInstance();
         current.set(current.get(Calendar.YEAR),
                 current.get(Calendar.MONTH),
                 current.get(Calendar.DATE),0,0,0);
 
-        SimpleSharedPreferences.getSimpleSharedPreference(mParentActivity)
-                .save(LAST_SYNC_TIMESTAMP_KEY, current.getTimeInMillis());
+        //SimpleSharedPreferences.getSimpleSharedPreference(mParentActivity)
+        //        .save(LAST_SYNC_TIMESTAMP_KEY, current.getTimeInMillis());
     }
 
 
+    @Override
+    public void onGetUsers(List<User> users) {
+
+    }
+
+    @Override
+    public void onCreateUser(String userHash) {
+
+    }
+
+    @Override
+    public void onInsertActivity() {
+
+    }
 }
