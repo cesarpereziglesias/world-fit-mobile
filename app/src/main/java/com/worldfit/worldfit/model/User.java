@@ -86,10 +86,12 @@ public class User {
     }
 
     public void setAvatar(Context context, ImageView imageView) {
-        String gravatarHash = MD5Util.md5Hex(this.mail);
-        Log.d(TAG, "Download gravatar");
-        Picasso.with(context).load(AVATAR_URL+gravatarHash+"?s=200&d=mm")
-                .transform(new CircleTransform())
-                .into(imageView);
+        if(!USER_NODATA.equals(this.name)) {
+            String gravatarHash = MD5Util.md5Hex(this.mail);
+            Log.d(TAG, "Download gravatar");
+            Picasso.with(context).load(AVATAR_URL + gravatarHash + "?s=200&d=mm")
+                    .transform(new CircleTransform())
+                    .into(imageView);
+        }
     }
 }

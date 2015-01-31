@@ -22,18 +22,19 @@ import it.neokree.materialnavigationdrawer.elements.listeners.MaterialAccountLis
 
 public class MainDrawerActivity extends MaterialNavigationDrawer implements MaterialAccountListener, Runnable, UsersManagerListener {
 
-    private static User user;
+    private static User mUser;
 
     @Override
     public void init(Bundle savedInstanceState) {
 
         this.disableLearningPattern();
 
-        user = User.readSharedUser(this);
+        mUser = User.readSharedUser(this);
 
         // add accounts
-        MaterialAccount account = new MaterialAccount(this.getResources(), user.getName(), user.getMail() , R.drawable.ic_avatar_default, R.drawable.bamboo);
-        user.setAvatar(this, (ImageView) findViewById(R.id.user_photo));
+        MaterialAccount account = new MaterialAccount(this.getResources(), mUser.getName(), mUser.getMail() , R.drawable.ic_avatar_default, R.drawable.bamboo);
+        mUser.setAvatar(this, (ImageView) findViewById(R.id.user_photo));
+
         FitApiWrapper.getInstance(this).connect(this);
         this.addAccount(account);
 
