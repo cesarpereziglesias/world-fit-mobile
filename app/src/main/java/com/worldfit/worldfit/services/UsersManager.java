@@ -1,6 +1,7 @@
 package com.worldfit.worldfit.services;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.worldfit.worldfit.model.Activity;
 import com.worldfit.worldfit.model.User;
@@ -9,6 +10,8 @@ import com.worldfit.worldfit.services.listeners.UsersManagerListener;
 import java.util.List;
 
 public class UsersManager extends ServiceManager {
+
+    private static final String TAG = UsersManager.class.getName();
 
     public void getUsersList(final UsersManagerListener listener) {
         new AsyncTask<Void, Void, List<User>>() {
@@ -50,6 +53,7 @@ public class UsersManager extends ServiceManager {
         new AsyncTask<Void, Void, List<Activity>>() {
             @Override
             protected List<Activity> doInBackground(Void... params) {
+                Log.d(TAG, hash);
                 return mService.getUserActivities(hash);
             }
 
