@@ -2,10 +2,9 @@
     <string name="app_name">WorldFit</string>
     <string name="title_activity_main_drawer">WorldFit</string>
 
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="sync_button">Synchronize</string>
+    <string name="hello_blank_fragment">hello main fragment</string>
+    <string name="resume">myResume</string>
 
-<!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="resume">My Resume</string>
 </resources>
