@@ -27,6 +27,10 @@ public class User {
     private String name;
     private String mail;
 
+    public User(String mail){
+        this(null, null, mail);
+    }
+
     public User(String hash, String name, String mail) {
         this.hash = hash;
         this.name = name;
