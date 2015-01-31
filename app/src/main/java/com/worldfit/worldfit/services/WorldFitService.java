@@ -38,5 +38,7 @@ public interface WorldFitService {
     @GET("/challenges/{id}")
     List<Challenge> getChallenge(@Path("id") int id);
 
+    @POST("/challenges/{id}/subscribe")
+    String subscribeChallenge(@Path("id") int id, @Body String userHash);
 
 }

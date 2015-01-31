@@ -68,5 +68,23 @@ public class ChallengeManager extends ServiceManager {
         }.execute();
     }
 
+    public void subscribeChallenge(final int challengeId, final String userHash, final ChallengesManagerListener listener) {
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... params) {
+                mService.subscribeChallenge(challengeId, userHash);
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+
+                super.onPostExecute(aVoid);
+
+                listener.onSubscribe();
+            }
+        }.execute();
+    }
+
 
 }
