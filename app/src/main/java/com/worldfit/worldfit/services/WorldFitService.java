@@ -31,7 +31,12 @@ public interface WorldFitService {
     @GET("/challenges")
     List<Challenge> listChallenges();
 
-    @GET("/challenge/{id}")
+    @POST("/challenges")
+    String createChallenge(@Body Challenge challenge);
+
+
+    @GET("/challenges/{id}")
     List<Challenge> getChallenge(@Path("id") int id);
+
 
 }
