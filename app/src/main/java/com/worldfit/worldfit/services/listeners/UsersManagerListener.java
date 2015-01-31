@@ -9,4 +9,6 @@ public interface UsersManagerListener {
     public void onGetUsers(List<User> users);
 
     public void onCreateUser(String userHash);
+
+    public void onInsertActivity();
 }

@@ -76,11 +76,16 @@ public class MainDrawerActivity extends MaterialNavigationDrawer implements Mate
 
     @Override
     public void onGetUsers(List<User> users) {
-
+        // Do nothing
     }
 
     @Override
     public void onCreateUser(String userHash) {
         Log.d("Email", userHash);
+    }
+
+    @Override
+    public void onInsertActivity() {
+        // TODO
     }
 }
