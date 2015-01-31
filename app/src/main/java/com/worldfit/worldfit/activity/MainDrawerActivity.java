@@ -23,6 +23,7 @@ import it.neokree.materialnavigationdrawer.elements.listeners.MaterialAccountLis
 public class MainDrawerActivity extends MaterialNavigationDrawer implements MaterialAccountListener, Runnable, UsersManagerListener {
 
     private static User mUser;
+    private MaterialAccount mAccount;
 
     @Override
     public void init(Bundle savedInstanceState) {
@@ -31,12 +32,12 @@ public class MainDrawerActivity extends MaterialNavigationDrawer implements Mate
 
         mUser = User.readSharedUser(this);
 
-        // add accounts
-        MaterialAccount account = new MaterialAccount(this.getResources(), mUser.getName(), mUser.getMail() , R.drawable.ic_avatar_default, R.drawable.bamboo);
+        MaterialAccount mAccount = new MaterialAccount(this.getResources(), mUser.getName(), mUser.getMail() , R.drawable.ic_avatar_default, R.drawable.bamboo);
+
         mUser.setAvatar(this, (ImageView) findViewById(R.id.user_photo));
+        this.addAccount(mAccount);
 
         FitApiWrapper.getInstance(this).connect(this);
-        this.addAccount(account);
 
         // create sections
         this.addSection(newSection(getString(R.string.resume), new MainFragment()));
@@ -71,6 +72,7 @@ public class MainDrawerActivity extends MaterialNavigationDrawer implements Mate
         String email = FitApiWrapper.getInstance(this).getSignedEmail();
         Log.d("Email", email);
         User user = new User(email);
+        user.saveInLocalShared(this);
         UsersManager usersManager = new UsersManager();
         usersManager.createUser(user, this);
     }
@@ -83,6 +85,15 @@ public class MainDrawerActivity extends MaterialNavigationDrawer implements Mate
     @Override
     public void onCreateUser(String userHash) {
         Log.d("Email", userHash);
+        setUser();
+    }
+
+    private void setUser(){
+        mUser = User.readSharedUser(this);
+        mUser.setAvatar(this, (ImageView) findViewById(R.id.user_photo));
+        mAccount.setTitle(mUser.getName());
+        mAccount.setSubTitle(mUser.getMail());
+        notifyAccountDataChanged();
     }
 
     @Override

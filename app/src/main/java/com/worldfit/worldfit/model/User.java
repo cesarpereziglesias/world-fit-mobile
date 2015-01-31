@@ -73,12 +73,12 @@ public class User {
             user.name = "Default";
             user.mail = "nouser@worldfit.com";
             user.hash = "default";
-            user.save(context);
+            user.saveInLocalShared(context);
         }
         return user;
     }
 
-    public void save(Context context) {
+    public void saveInLocalShared(Context context) {
         SimpleSharedPreferences sharedData = SimpleSharedPreferences.getSimpleSharedPreference(context);
         sharedData.save(USER_HASH, this.hash);
         sharedData.save(USER_NAME, this.name);
