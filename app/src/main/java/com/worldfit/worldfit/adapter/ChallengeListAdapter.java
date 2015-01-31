@@ -8,13 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.worldfit.worldfit.R;
+import com.worldfit.worldfit.activity.ChallengeActivity;
 import com.worldfit.worldfit.model.Challenge;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -56,8 +55,8 @@ public class ChallengeListAdapter extends ArrayAdapter<Challenge> {
             public void onClick(View v) {
                 Log.d(TAG, challenge.toString());
                 Intent intent = new Intent(mContext, ChallengeActivity.class);
-                intent.setAction(ContactsContract.CommonDataKinds.Note.ACTION_SHOW);
-                intent.putExtra(ContactsContract.CommonDataKinds.Note.EXTRA_NOTE, challenge.toBundle());
+                intent.setAction(ChallengeActivity.ACTION_SHOW);
+                intent.putExtra(ChallengeActivity.BUNDLE_CHALLENGE, challenge.toBundle());
             }
         });
     }
@@ -65,6 +64,6 @@ public class ChallengeListAdapter extends ArrayAdapter<Challenge> {
 
     @Override
     public long getItemId(int position) {
-        return this.mNotes.get(position).getId();
+        return this.mListChallenges.get(position).getId();
     }
 }
