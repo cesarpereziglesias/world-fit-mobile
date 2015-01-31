@@ -1,40 +1,33 @@
 package com.worldfit.worldfit.fragment;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.Chart;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
 import com.worldfit.worldfit.R;
+import com.worldfit.worldfit.model.User;
+import com.worldfit.worldfit.services.UsersManager;
+import com.worldfit.worldfit.services.listeners.UsersManagerListener;
+import com.worldfit.worldfit.util.FitApiWrapper;
 
-public class MainFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+import java.util.ArrayList;
+import java.util.List;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+public class MainFragment extends Fragment implements UsersManagerListener {
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment MainFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static MainFragment newInstance(String param1, String param2) {
-        MainFragment fragment = new MainFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    private static final String TAG = MainFragment.class.getName();
+    private Activity mParentActivity;
+    private BarChart mBarChart;
+
 
     public MainFragment() {
         // Required empty public constructor
@@ -43,19 +36,66 @@ public class MainFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        UsersManager usersManager = new UsersManager();
+        User user = User.readSharedUser(mParentActivity);
+        usersManager.getUserActivities(user.getHash(), this);
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        mParentActivity = activity;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_main, container, false);
+
+        View v = inflater.inflate(R.layout.fragment_main, container, false);
+        mBarChart = (BarChart) v.findViewById(R.id.chart);
+        return v;
     }
 
 
+    @Override
+    public void onGetUsers(List<User> users) {
 
+    }
+
+    @Override
+    public void onCreateUser(String userHash) {
+
+    }
+
+    @Override
+    public void onGetUserActivities(List<com.worldfit.worldfit.model.Activity> activities) {
+        this.showActivities(activities);
+    }
+
+    private void showActivities(List<com.worldfit.worldfit.model.Activity> activities) {
+
+
+        ArrayList<BarEntry> valsComp1 = new ArrayList<BarEntry>();
+        int i = 0;
+        ArrayList<String> xVals = new ArrayList<String>();
+        for(com.worldfit.worldfit.model.Activity activity: activities){
+
+            valsComp1.add(new BarEntry(activity.getValue(), i++));
+            xVals.add(activity.getDate());
+        }
+        BarDataSet barDataSet = new BarDataSet(valsComp1, "Steps/Day");
+
+        BarData barData = new BarData(xVals, barDataSet);
+
+        mBarChart.setData(barData);
+
+        mBarChart.setVisibility(View.VISIBLE);
+        mBarChart.animateY(500);
+    }
+
+    @Override
+    public void onInsertActivity() {
+
+    }
 }
