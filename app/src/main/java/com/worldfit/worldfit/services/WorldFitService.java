@@ -19,6 +19,9 @@ public interface WorldFitService {
     String createUser(@Body User user);
 
     @POST("/users/{hash}/activities")
+    List<Activity> getUserActivities(@Path("hash") String hash);
+
+    @POST("/users/{hash}/activities")
     String insertActivity(
             @Path("hash") String hash,
             @Body List<Activity> activities
