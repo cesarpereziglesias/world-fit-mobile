@@ -16,12 +16,12 @@
     <DatePicker
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/datePicker" />
+        android:id="@+id/beginDatePicker" />
 
 
     <DatePicker
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/datePicker" />
+        android:id="@+id/endDatePicker" />
 
 </LinearLayout>
