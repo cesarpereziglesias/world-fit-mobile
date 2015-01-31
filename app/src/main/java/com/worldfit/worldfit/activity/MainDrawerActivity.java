@@ -1,41 +1,46 @@
 package com.worldfit.worldfit.activity;
 
-import android.support.v7.app.ActionBarActivity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import com.worldfit.worldfit.R;
+import com.worldfit.worldfit.fragment.MainFragment;
+import com.worldfit.worldfit.util.SimpleSharedPreferences;
+
+import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
+import it.neokree.materialnavigationdrawer.elements.MaterialAccount;
+import it.neokree.materialnavigationdrawer.elements.listeners.MaterialAccountListener;
 
 
-public class MainDrawerActivity extends ActionBarActivity {
+public class MainDrawerActivity extends MaterialNavigationDrawer implements MaterialAccountListener {
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_drawer);
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main_drawer, menu);
-        return true;
-    }
+    private SimpleSharedPreferences data;
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+    public void init(Bundle savedInstanceState) {
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+        data = SimpleSharedPreferences.getSimpleSharedPreference(this);
 
-        return super.onOptionsItemSelected(item);
+        // add accounts
+        MaterialAccount account = new MaterialAccount(this.getResources(),"Test","worldfit@gmail.com",R.drawable.photo, R.drawable.bamboo);
+        this.addAccount(account);
+
+        // create sections
+        this.addSection(newSection(getString(R.string.resume), new MainFragment()));
+
+        // create bottom section
+        this.addBottomSection(newSection(getString(R.string.action_settings),R.drawable.ic_settings_black_24dp,new Intent(this,SettingsActivity.class)));
+
     }
+
+    @Override
+    public void onAccountOpening(MaterialAccount account) {
+
+    }
+
+    @Override
+    public void onChangeAccount(MaterialAccount newAccount) {
+
+    }
+
 }
