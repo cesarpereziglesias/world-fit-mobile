@@ -4,5 +4,6 @@
 
     <string name="action_settings">Settings</string>
     <string name="sync_button">Synchronize</string>
+    <string name="hello_blank_fragment">hello main fragment</string>
 
 </resources>
