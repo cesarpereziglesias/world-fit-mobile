@@ -3,13 +3,11 @@ package com.worldfit.worldfit.fragment;
 import android.app.Activity;
 import android.os.Bundle;
 import android.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -17,7 +15,6 @@ import com.worldfit.worldfit.R;
 import com.worldfit.worldfit.model.User;
 import com.worldfit.worldfit.services.UsersManager;
 import com.worldfit.worldfit.services.listeners.UsersManagerListener;
-import com.worldfit.worldfit.util.FitApiWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
