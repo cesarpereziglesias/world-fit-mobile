@@ -52,18 +52,18 @@ public class ChallengeManager extends ServiceManager {
     }
 
     public void getChallenge(final int id, final ChallengesManagerListener listener) {
-        new AsyncTask<Void, Void, List<Challenge>>() {
+        new AsyncTask<Void, Void, Challenge>() {
             @Override
-            protected List<Challenge> doInBackground(Void... params) {
+            protected Challenge doInBackground(Void... params) {
                 return mService.getChallenge(id);
             }
 
             @Override
-            protected void onPostExecute(List<Challenge> challenges) {
+            protected void onPostExecute(Challenge challenge) {
 
-                super.onPostExecute(challenges);
+                super.onPostExecute(challenge);
 
-                listener.onGetChallenges(challenges);
+                listener.onGetChallenge(challenge);
             }
         }.execute();
     }

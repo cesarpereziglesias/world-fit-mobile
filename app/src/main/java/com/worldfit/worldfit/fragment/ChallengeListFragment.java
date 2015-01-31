@@ -97,6 +97,11 @@ public class ChallengeListFragment extends Fragment implements ChallengesManager
     }
 
     @Override
+    public void onGetChallenge(Challenge challenge) {
+
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_challenge_list, menu);

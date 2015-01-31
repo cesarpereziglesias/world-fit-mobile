@@ -23,6 +23,10 @@ public class Result {
         return this.user.getMail();
     }
 
+    public String getName() { return this.user.getName(); }
+
+    public User getUser() { return this.user; }
+
     public void setMail(String mail) {
         this.user = new User(mail);
     }

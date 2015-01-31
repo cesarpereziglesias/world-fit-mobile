@@ -4,7 +4,7 @@ import android.os.Bundle;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.List;
 
 /**
  * Created by tonimc on 31/1/15.
@@ -26,6 +26,16 @@ public class Challenge {
     private String challenge_type;
     private String init;
     private String end;
+
+    public List<Result> getResult() {
+        return result;
+    }
+
+    public void setResult(List<Result> result) {
+        this.result = result;
+    }
+
+    private List<Result> result;
 
     public Challenge() {}
 
