@@ -7,6 +7,7 @@ import android.widget.ImageView;
 
 import com.worldfit.worldfit.R;
 import com.worldfit.worldfit.fragment.MainFragment;
+import com.worldfit.worldfit.fragment.SyncFragment;
 import com.worldfit.worldfit.model.User;
 import com.worldfit.worldfit.util.FitApiWrapper;
 
@@ -37,6 +38,7 @@ public class MainDrawerActivity extends MaterialNavigationDrawer implements Mate
 
         // create sections
         this.addSection(newSection(getString(R.string.resume), new MainFragment()));
+        this.addSection(newSection(getString(R.string.synchronize), new SyncFragment()));
 
         // create bottom section
         this.addBottomSection(newSection(getString(R.string.action_settings),R.drawable.ic_settings_black_24dp,new Intent(this,SettingsActivity.class)));
