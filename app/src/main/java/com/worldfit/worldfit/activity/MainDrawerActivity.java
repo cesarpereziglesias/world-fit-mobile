@@ -22,18 +22,19 @@ import it.neokree.materialnavigationdrawer.elements.listeners.MaterialAccountLis
 
 public class MainDrawerActivity extends MaterialNavigationDrawer implements MaterialAccountListener, Runnable, UsersManagerListener {
 
-    private static User user;
+    private static User mUser;
     private MaterialAccount mAccount;
+
     @Override
     public void init(Bundle savedInstanceState) {
 
         this.disableLearningPattern();
 
-        // add accounts
-        user = User.readSharedUser(this);
-        mAccount = new MaterialAccount(this.getResources(), user.getName(), user.getMail() , R.drawable.ic_avatar_default, R.drawable.bamboo);
+        mUser = User.readSharedUser(this);
 
-        user.setAvatar(this, (ImageView) findViewById(R.id.user_photo));
+        MaterialAccount mAccount = new MaterialAccount(this.getResources(), mUser.getName(), mUser.getMail() , R.drawable.ic_avatar_default, R.drawable.bamboo);
+
+        mUser.setAvatar(this, (ImageView) findViewById(R.id.user_photo));
         this.addAccount(mAccount);
 
         FitApiWrapper.getInstance(this).connect(this);
@@ -89,10 +90,10 @@ public class MainDrawerActivity extends MaterialNavigationDrawer implements Mate
     }
 
     private void setUser(){
-        user = User.readSharedUser(this);
-        user.setAvatar(this, (ImageView) findViewById(R.id.user_photo));
-        mAccount.setTitle(user.getName());
-        mAccount.setSubTitle(user.getMail());
+        mUser = User.readSharedUser(this);
+        mUser.setAvatar(this, (ImageView) findViewById(R.id.user_photo));
+        mAccount.setTitle(mUser.getName());
+        mAccount.setSubTitle(mUser.getMail());
         notifyAccountDataChanged();
     }
 
