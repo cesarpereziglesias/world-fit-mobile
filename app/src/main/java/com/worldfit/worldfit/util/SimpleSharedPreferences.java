@@ -29,6 +29,10 @@ public class SimpleSharedPreferences {
         return this.mSharedPreferences.getInt(key, defValue);
     }
 
+    public long read(String key, long defValue) {
+        return this.mSharedPreferences.getLong(key, defValue);
+    }
+
     public String read(String key, String defValue) {
         return this.mSharedPreferences.getString(key, defValue);
     }

@@ -18,6 +18,7 @@ import com.google.android.gms.fitness.data.DataType;
 import com.google.android.gms.fitness.data.Field;
 import com.google.android.gms.fitness.request.DataReadRequest;
 import com.google.android.gms.fitness.result.DataReadResult;
+import com.google.android.gms.plus.Plus;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -32,34 +33,35 @@ import java.util.concurrent.TimeUnit;
 public class FitApiWrapper  {
 
     //Singleton provider
-    private static FitApiWrapper instance;
+    private static FitApiWrapper mInstance;
+    private Runnable mConnectedCallBack;
 
     public static FitApiWrapper getInstance(Activity contextActivity) {
-        if(instance == null) {
-            instance = new FitApiWrapper(contextActivity);
+        if(mInstance == null) {
+            mInstance = new FitApiWrapper(contextActivity);
         }
-        return instance;
+        return mInstance;
     }
 
 
     private static final String TAG = "FitApiWrapper";
     private static final String DATE_FORMAT = "yyyy-MM-dd";
-    private static final int REQUEST_OAUTH = 1001;
+    private static final int REQUEST_OAUTH = 1002;
 
-    private Activity contextActivity;
-    private GoogleApiClient googleApiClient;
-    private boolean authInProgress;
-    private SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
+    private Activity mContextActivity;
+    private GoogleApiClient mGoogleApiClient;
+    private boolean mAuthInProgress;
+    private SimpleDateFormat mDateFormat = new SimpleDateFormat(DATE_FORMAT);
 
     private FitApiWrapper(Activity contextActivity){
+        this.mContextActivity = contextActivity;
         buildFitnessClient();
-        googleApiClient.connect();
     }
 
     public HashMap<String, Integer> retrieveUserStepsStartingFrom(long beginStepsTimestamp){
         DataReadRequest dataReadRequest =  this.queryStepsFitData(beginStepsTimestamp);
         DataReadResult dataReadResult =
-                Fitness.HistoryApi.readData(this.googleApiClient, dataReadRequest).await(1, TimeUnit.MINUTES);
+                Fitness.HistoryApi.readData(this.mGoogleApiClient, dataReadRequest).await(1, TimeUnit.MINUTES);
 
 
 
@@ -71,7 +73,7 @@ public class FitApiWrapper  {
                 //fit query procedure
                 DataSet dataset = bucket.getDataSets().get(0);
                 DataPoint datapoint = dataset.getDataPoints().get(0);
-                String date = dateFormat.format(datapoint.getStartTime(TimeUnit.MILLISECONDS));
+                String date = mDateFormat.format(datapoint.getStartTime(TimeUnit.MILLISECONDS));
                 int value = datapoint.getValue(Field.FIELD_STEPS).asInt();
                 userStepsDataGroupedByDate.put(date, value);
             }catch (Exception e){
@@ -99,15 +101,16 @@ public class FitApiWrapper  {
      */
     private void buildFitnessClient() {
         // Create the Google API Client
-        googleApiClient = new GoogleApiClient.Builder(contextActivity.getApplicationContext())
+        mGoogleApiClient = new GoogleApiClient.Builder(mContextActivity.getApplicationContext())
                 .addApi(Fitness.API)
+                .addApi(Plus.API)
+                .addScope(Plus.SCOPE_PLUS_LOGIN)
                 .addScope(new Scope(Scopes.FITNESS_ACTIVITY_READ_WRITE))
                 .addConnectionCallbacks(
                         new GoogleApiClient.ConnectionCallbacks() {
                             @Override
                             public void onConnected(Bundle bundle) {
-                                Log.i(TAG, "Connected!!!");
-
+                                mConnectedCallBack.run();
                             }
 
                             @Override
@@ -131,17 +134,17 @@ public class FitApiWrapper  {
                                 if (!result.hasResolution()) {
                                     // Show the localized error dialog
                                     GooglePlayServicesUtil.getErrorDialog(result.getErrorCode(),
-                                            contextActivity, 0).show();
+                                            mContextActivity, 0).show();
                                     return;
                                 }
                                 // The failure has a resolution. Resolve it.
                                 // Called typically when the app is not yet authorized, and an
                                 // authorization dialog is displayed to the user.
-                                if (!authInProgress) {
+                                if (!mAuthInProgress) {
                                     try {
                                         Log.i(TAG, "Attempting to resolve failed connection");
-                                        authInProgress = true;
-                                        result.startResolutionForResult(contextActivity,
+                                        mAuthInProgress = true;
+                                        result.startResolutionForResult(mContextActivity,
                                                 REQUEST_OAUTH);
                                     } catch (IntentSender.SendIntentException e) {
                                         Log.e(TAG,
@@ -172,5 +175,19 @@ public class FitApiWrapper  {
                 .build();
 
         return readRequest;
+    }
+
+
+    public void connect(Runnable callback) {
+        this.mConnectedCallBack = callback;
+        if(mGoogleApiClient.isConnected()){
+            this.mConnectedCallBack.run();
+        }else{
+            this.mGoogleApiClient.connect();
+        }
+    }
+
+    public String getSignedEmail() {
+        return Plus.AccountApi.getAccountName(mGoogleApiClient);
     }
 }
