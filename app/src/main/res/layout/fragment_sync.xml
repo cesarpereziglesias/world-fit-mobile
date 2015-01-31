@@ -7,8 +7,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/sync_button"
-        android:onClick="onClickSyncButton"
+        android:text="@string/synchronize"
         android:id="@+id/syncBtn"
         android:layout_gravity="center" />
 

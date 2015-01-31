@@ -27,6 +27,10 @@ public class User {
     private String name;
     private String mail;
 
+    public User(String mail){
+        this(null, null, mail);
+    }
+
     public User(String hash, String name, String mail) {
         this.hash = hash;
         this.name = name;
@@ -67,7 +71,7 @@ public class User {
         );
         if(USER_NODATA.equals(user.hash)) {
             user.name = "Default";
-            user.mail = "tonimc@gmail.com";
+            user.mail = "nouser@worldfit.com";
             user.hash = "default";
             user.save(context);
         }

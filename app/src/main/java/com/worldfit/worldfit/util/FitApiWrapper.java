@@ -9,6 +9,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.fitness.Fitness;
 import com.google.android.gms.fitness.data.Bucket;
@@ -19,6 +20,8 @@ import com.google.android.gms.fitness.data.Field;
 import com.google.android.gms.fitness.request.DataReadRequest;
 import com.google.android.gms.fitness.result.DataReadResult;
 import com.google.android.gms.plus.Plus;
+import com.worldfit.worldfit.fragment.ReceiverStepData;
+import com.worldfit.worldfit.fragment.SyncFragment;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -58,30 +61,33 @@ public class FitApiWrapper  {
         buildFitnessClient();
     }
 
-    public HashMap<String, Integer> retrieveUserStepsStartingFrom(long beginStepsTimestamp){
+    public void sendToReceiverUserStepsStartingFrom(long beginStepsTimestamp,final ReceiverStepData receiverStepData){
         DataReadRequest dataReadRequest =  this.queryStepsFitData(beginStepsTimestamp);
-        DataReadResult dataReadResult =
-                Fitness.HistoryApi.readData(this.mGoogleApiClient, dataReadRequest).await(1, TimeUnit.MINUTES);
+        final HashMap<String, Integer> userStepsDataGroupedByDate = new LinkedHashMap<String, Integer>();
+        Fitness.HistoryApi.readData(this.mGoogleApiClient, dataReadRequest).setResultCallback(new ResultCallback<DataReadResult>() {
+            @Override
+            public void onResult(DataReadResult dataReadResult) {
+                //Each bucket represents a day
+                for(Bucket bucket : dataReadResult.getBuckets()){
+                    try {
+                        //we have only one dataset and one datapoint in a day because of the aggregation in
+                        //fit query procedure
+                        DataSet dataset = bucket.getDataSets().get(0);
+                        DataPoint datapoint = dataset.getDataPoints().get(0);
+                        String date = mDateFormat.format(datapoint.getStartTime(TimeUnit.MILLISECONDS));
+                        int value = datapoint.getValue(Field.FIELD_STEPS).asInt();
+                        userStepsDataGroupedByDate.put(date, value);
+                    }catch (Exception e){
+                        // we pass if day doesn't have dataset
+                    }
+                }
 
-
-
-        HashMap<String, Integer> userStepsDataGroupedByDate = new LinkedHashMap<String, Integer>();
-        //Each bucket represents a day
-        for(Bucket bucket : dataReadResult.getBuckets()){
-            try {
-                //we have only one dataset and one datapoint in a day because of the aggregation in
-                //fit query procedure
-                DataSet dataset = bucket.getDataSets().get(0);
-                DataPoint datapoint = dataset.getDataPoints().get(0);
-                String date = mDateFormat.format(datapoint.getStartTime(TimeUnit.MILLISECONDS));
-                int value = datapoint.getValue(Field.FIELD_STEPS).asInt();
-                userStepsDataGroupedByDate.put(date, value);
-            }catch (Exception e){
-                // we pass if day doesn't have dataset
+                receiverStepData.sendData(userStepsDataGroupedByDate);
             }
-        }
+        });
 
-        return userStepsDataGroupedByDate;
+
+
     }
 
 
@@ -163,10 +169,11 @@ public class FitApiWrapper  {
      */
     private DataReadRequest queryStepsFitData(long LastSyncTimestamp) {
         Calendar cal = Calendar.getInstance();
-        Date now = new Date();
-        cal.setTime(now);
-        long endTime = LastSyncTimestamp;
-        long startTime = cal.getTimeInMillis();
+        cal.set(cal.get(Calendar.YEAR),
+                cal.get(Calendar.MONTH),
+                cal.get(Calendar.DATE),23, 59, 0);
+        long startTime = LastSyncTimestamp;
+        long endTime = cal.getTimeInMillis();
 
         DataReadRequest readRequest = new DataReadRequest.Builder()
                 .aggregate(DataType.TYPE_STEP_COUNT_DELTA, DataType.AGGREGATE_STEP_COUNT_DELTA)
