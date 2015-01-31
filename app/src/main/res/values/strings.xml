@@ -14,5 +14,6 @@
     <string name="action_subscribe">Subscribe</string>
     <string name="challenge_end_date">End date</string>
     <string name="challenge_init_date">Initial date</string>
+    <string name="challenge_name">Challenge name</string>
 
 </resources>
