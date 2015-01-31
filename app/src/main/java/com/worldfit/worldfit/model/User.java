@@ -10,6 +10,11 @@ import com.worldfit.worldfit.util.CircleTransform;
 import com.worldfit.worldfit.util.MD5Util;
 import com.worldfit.worldfit.util.SimpleSharedPreferences;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * Created by tonimc on 31/1/15.
  */
@@ -28,7 +33,18 @@ public class User {
     private String mail;
 
     public User(String mail){
-        this(null, null, mail);
+        this(null, getUser(mail), mail);
+    }
+
+    private static String getUser(String mail) {
+        Log.d(TAG, mail);
+        Pattern pattern = Pattern.compile("^(.+)@gmail\\.com$");
+        Matcher matcher = pattern.matcher(mail);
+        if(matcher.find()) {
+            return matcher.group(1);
+        }
+        return USER_NODATA;
+
     }
 
     public User(String hash, String name, String mail) {
@@ -93,5 +109,14 @@ public class User {
                     .transform(new CircleTransform())
                     .into(imageView);
         }
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("id=").append(this.hash);
+        sb.append(", ").append("name=").append(this.name);
+        sb.append(", ").append("owner=").append(this.mail);
+        return sb.toString();
     }
 }

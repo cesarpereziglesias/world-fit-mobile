@@ -6,6 +6,7 @@ import android.util.Log;
 import android.widget.ImageView;
 
 import com.worldfit.worldfit.R;
+import com.worldfit.worldfit.fragment.ChallengeListFragment;
 import com.worldfit.worldfit.fragment.MainFragment;
 import com.worldfit.worldfit.fragment.SyncFragment;
 import com.worldfit.worldfit.model.Activity;
@@ -31,18 +32,19 @@ public class MainDrawerActivity extends MaterialNavigationDrawer implements Mate
 
         this.disableLearningPattern();
 
-        mUser = User.readSharedUser(this);
+        this.mUser = User.readSharedUser(this);
 
-        MaterialAccount mAccount = new MaterialAccount(this.getResources(), mUser.getName(), mUser.getMail() , R.drawable.ic_avatar_default, R.drawable.bamboo);
+        this.mAccount = new MaterialAccount(this.getResources(), mUser.getName(), mUser.getMail() , R.drawable.ic_avatar_default, R.drawable.bamboo);
 
-        mUser.setAvatar(this, (ImageView) findViewById(R.id.user_photo));
+        this.mUser.setAvatar(this, (ImageView) findViewById(R.id.user_photo));
         this.addAccount(mAccount);
 
         FitApiWrapper.getInstance(this).connect(this);
 
         // create sections
-        this.addSection(newSection(getString(R.string.resume), new MainFragment()));
-        this.addSection(newSection(getString(R.string.synchronize), new SyncFragment()));
+        this.addSection(newSection(getString(R.string.resume), R.drawable.ic_avatar_default, new MainFragment()));
+        this.addSection(newSection(getString(R.string.challenges), R.drawable.ic_challenge, new ChallengeListFragment()));
+        this.addSection(newSection(getString(R.string.synchronize), android.R.drawable.stat_notify_sync, new SyncFragment()));
 
         // create bottom section
         this.addBottomSection(newSection(getString(R.string.action_settings),R.drawable.ic_settings_black_24dp,new Intent(this,SettingsActivity.class)));
@@ -72,7 +74,7 @@ public class MainDrawerActivity extends MaterialNavigationDrawer implements Mate
     public void run() {
         String email = FitApiWrapper.getInstance(this).getSignedEmail();
         Log.d("Email", email);
-        mUser.setMail(email);
+        mUser = new User(email);
         UsersManager usersManager = new UsersManager();
         usersManager.createUser(mUser, this);
     }
@@ -97,10 +99,11 @@ public class MainDrawerActivity extends MaterialNavigationDrawer implements Mate
 
     private void setUser(){
         mUser = User.readSharedUser(this);
-        mUser.setAvatar(this, (ImageView) findViewById(R.id.user_photo));
         mAccount.setTitle(mUser.getName());
         mAccount.setSubTitle(mUser.getMail());
         notifyAccountDataChanged();
+
+        mUser.setAvatar(this, (ImageView) findViewById(R.id.user_photo));
     }
 
     @Override

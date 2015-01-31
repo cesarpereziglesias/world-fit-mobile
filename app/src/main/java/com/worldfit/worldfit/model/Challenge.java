@@ -86,21 +86,6 @@ public class Challenge {
         this.end = end;
     }
 
-    @Override
-    public String toString() {
-
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-
-        StringBuilder sb = new StringBuilder();
-        sb.append("id=").append(this.id);
-        sb.append(", ").append("name=").append(this.name);
-        sb.append(", ").append("owner=").append(this.owner);
-        sb.append(", ").append("challenge_type=").append(this.challenge_type);
-        sb.append(", ").append("init=").append(dateFormat.format(this.init));
-        sb.append(", ").append("end=").append(dateFormat.format(this.end));
-        return sb.toString();
-    }
-
     public Bundle toBundle() {
         Bundle bundle = new Bundle();
         bundle.putInt(CHALLENGE_ID, getId());
@@ -123,4 +108,18 @@ public class Challenge {
         return challenge;
     }
 
+    @Override
+    public String toString() {
+
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("id=").append(this.id);
+        sb.append(", ").append("name=").append(this.name);
+        sb.append(", ").append("owner=").append(this.owner);
+        sb.append(", ").append("challenge_type=").append(this.challenge_type);
+        sb.append(", ").append("init=").append(dateFormat.format(this.init));
+        sb.append(", ").append("end=").append(dateFormat.format(this.end));
+        return sb.toString();
+    }
 }

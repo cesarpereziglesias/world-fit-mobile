@@ -1,6 +1,7 @@
 package com.worldfit.worldfit.services;
 
 import com.worldfit.worldfit.model.Activity;
+import com.worldfit.worldfit.model.Challenge;
 import com.worldfit.worldfit.model.User;
 
 import java.util.List;
@@ -26,5 +27,11 @@ public interface WorldFitService {
             @Path("hash") String hash,
             @Body List<Activity> activities
     );
+
+    @GET("/challenges")
+    List<Challenge> listChallenges();
+
+    @GET("/challenge/{id}")
+    List<Challenge> getChallenge(@Path("id") int id);
 
 }
