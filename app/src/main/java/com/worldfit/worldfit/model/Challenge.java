@@ -24,12 +24,12 @@ public class Challenge {
     private String name;
     private String owner;
     private String challenge_type;
-    private Date init;
-    private Date end;
+    private String init;
+    private String end;
 
     public Challenge() {}
 
-    public Challenge(int id, String name, String owner, String type, Date init, Date end) {
+    public Challenge(int id, String name, String owner, String type, String init, String end) {
         this.id = id;
         this.name = name;
         this.owner = owner;
@@ -70,19 +70,19 @@ public class Challenge {
         this.challenge_type = challenge_type;
     }
 
-    public Date getInit() {
+    public String getInit() {
         return init;
     }
 
-    public void setInit(Date init) {
+    public void setInit(String init) {
         this.init = init;
     }
 
-    public Date getEnd() {
+    public String getEnd() {
         return end;
     }
 
-    public void setEnd(Date end) {
+    public void setEnd(String end) {
         this.end = end;
     }
 
@@ -92,8 +92,8 @@ public class Challenge {
         bundle.putString(CHALLENGE_NAME, getName());
         bundle.putString(CHALLENGE_OWNER, getOwner());
         bundle.putString(CHALLENGE_TYPE, getChallenge_type());
-        bundle.putLong(CHALLENGE_DATE_INIT, getInit().getTime());
-        bundle.putLong(CHALLENGE_DATE_END, getEnd().getTime());
+        bundle.putString(CHALLENGE_DATE_INIT, getInit());
+        bundle.putString(CHALLENGE_DATE_END, getEnd());
         return bundle;
     }
 
@@ -103,8 +103,8 @@ public class Challenge {
         challenge.setName(bundle.getString(CHALLENGE_NAME));
         challenge.setOwner(bundle.getString(CHALLENGE_OWNER));
         challenge.setChallenge_type(bundle.getString(CHALLENGE_TYPE));
-        challenge.setInit(new Date(bundle.getLong(CHALLENGE_DATE_INIT)));
-        challenge.setEnd(new Date(bundle.getLong(CHALLENGE_DATE_INIT)));
+        challenge.setInit(bundle.getString(CHALLENGE_DATE_INIT));
+        challenge.setEnd(bundle.getString(CHALLENGE_DATE_INIT));
         return challenge;
     }
 
@@ -118,8 +118,8 @@ public class Challenge {
         sb.append(", ").append("name=").append(this.name);
         sb.append(", ").append("owner=").append(this.owner);
         sb.append(", ").append("challenge_type=").append(this.challenge_type);
-        sb.append(", ").append("init=").append(dateFormat.format(this.init));
-        sb.append(", ").append("end=").append(dateFormat.format(this.end));
+        sb.append(", ").append("init=").append(this.init);
+        sb.append(", ").append("end=").append(this.end);
         return sb.toString();
     }
 }

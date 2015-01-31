@@ -12,6 +12,8 @@ import android.widget.ListView;
 import com.worldfit.worldfit.R;
 import com.worldfit.worldfit.adapter.ChallengeListAdapter;
 import com.worldfit.worldfit.model.Challenge;
+import com.worldfit.worldfit.services.ChallengeManager;
+import com.worldfit.worldfit.services.listeners.ChallengesManagerListener;
 
 import java.util.Date;
 import java.util.ArrayList;
@@ -22,15 +24,15 @@ import java.util.List;
  * <p/>
  * <p/>
  */
-public class ChallengeListFragment extends Fragment {
+public class ChallengeListFragment extends Fragment implements ChallengesManagerListener {
 
     private static final String TAG = ChallengeListFragment.class.getSimpleName();
 
     private Activity mParentActivity;
 
     private ListView mListChallenge;
-    private ListAdapter mChallengeAdapter;
-
+    private ChallengeListAdapter mChallengeAdapter;
+    private List<Challenge> mChallenges = new ArrayList<Challenge>();
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -51,35 +53,17 @@ public class ChallengeListFragment extends Fragment {
         View mainView = inflater.inflate(R.layout.fragment_challenge_list, container, false);
 
         this.mListChallenge = (ListView) mainView.findViewById(R.id.list_challenges);
-        this.mChallengeAdapter = new ChallengeListAdapter(mParentActivity, getChallenges());
+        this.mChallengeAdapter = new ChallengeListAdapter(mParentActivity, mChallenges);
         setup();
         initEvents();
         return mainView;
     }
 
-    private List<Challenge> getChallenges() {
-        List<Challenge> challenges = new ArrayList<Challenge>();
-        challenges.add(new Challenge(1, "Corre gordo", "", "steps", new Date(), new Date()));
-        challenges.add(new Challenge(2, "Corre gordo", "", "steps", new Date(), new Date()));
-        challenges.add(new Challenge(3, "Corre gordo", "", "steps", new Date(), new Date()));
-        challenges.add(new Challenge(4, "Corre gordo", "", "steps", new Date(), new Date()));
-        challenges.add(new Challenge(5, "Corre gordo", "", "steps", new Date(), new Date()));
-        challenges.add(new Challenge(6, "Corre gordo", "", "steps", new Date(), new Date()));
-        challenges.add(new Challenge(7, "Corre gordo", "", "steps", new Date(), new Date()));
-        challenges.add(new Challenge(8, "Corre gordo", "", "steps", new Date(), new Date()));
-        challenges.add(new Challenge(8, "Corre gordo", "", "steps", new Date(), new Date()));
-        challenges.add(new Challenge(8, "Corre gordo", "", "steps", new Date(), new Date()));
-        challenges.add(new Challenge(8, "Corre gordo", "", "steps", new Date(), new Date()));
-        challenges.add(new Challenge(8, "Corre gordo", "", "steps", new Date(), new Date()));
-        challenges.add(new Challenge(8, "Corre gordo", "", "steps", new Date(), new Date()));
-        challenges.add(new Challenge(8, "Corre gordo", "", "steps", new Date(), new Date()));
-        challenges.add(new Challenge(8, "Corre gordo", "", "steps", new Date(), new Date()));
-        challenges.add(new Challenge(8, "Corre gordo", "", "steps", new Date(), new Date()));
-        return challenges;
-    }
 
     private void setup() {
         this.mListChallenge.setAdapter(this.mChallengeAdapter);
+        ChallengeManager challengeManager = new ChallengeManager();
+        challengeManager.getChallengesList(this);
     }
 
     private void initEvents() {
@@ -100,4 +84,15 @@ public class ChallengeListFragment extends Fragment {
     }
 
 
+    @Override
+    public void onGetChallenges(List<Challenge> challenges) {
+        this.mChallenges.clear();
+        this.mChallenges.addAll(challenges);
+        this.mChallengeAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onCreateChallenge(String result) {
+
+    }
 }
