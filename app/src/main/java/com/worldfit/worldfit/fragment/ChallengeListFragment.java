@@ -6,9 +6,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.worldfit.worldfit.R;
@@ -17,7 +17,6 @@ import com.worldfit.worldfit.model.Challenge;
 import com.worldfit.worldfit.services.ChallengeManager;
 import com.worldfit.worldfit.services.listeners.ChallengesManagerListener;
 
-import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,7 +45,6 @@ public class ChallengeListFragment extends Fragment implements ChallengesManager
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-
     }
 
     @Override
@@ -87,12 +85,6 @@ public class ChallengeListFragment extends Fragment implements ChallengesManager
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        // TODO Add your menu entries here
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
     public void onGetChallenges(List<Challenge> challenges) {
         this.mChallenges.clear();
         this.mChallenges.addAll(challenges);
@@ -103,4 +95,23 @@ public class ChallengeListFragment extends Fragment implements ChallengesManager
     public void onCreateChallenge(String result) {
 
     }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_challenge, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // handle item selection
+        switch (item.getItemId()) {
+            case R.id.action_suscribe:
+
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
 }
