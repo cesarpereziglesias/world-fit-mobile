@@ -24,7 +24,7 @@ import it.neokree.materialnavigationdrawer.elements.listeners.MaterialAccountLis
 
 public class MainDrawerActivity extends MaterialNavigationDrawer implements MaterialAccountListener, Runnable, UsersManagerListener {
 
-    private static User mUser;
+    public static User mUser;
     private MaterialAccount mAccount;
 
     @Override

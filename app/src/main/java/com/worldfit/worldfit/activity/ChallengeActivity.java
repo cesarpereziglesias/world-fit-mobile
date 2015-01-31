@@ -30,6 +30,7 @@ public class ChallengeActivity extends ActionBarActivity implements ChallengesMa
 
     private ListView mCalsification;
     private ResultListAdapter mResultAdapter;
+    private ChallengeManager mChallengeManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +38,7 @@ public class ChallengeActivity extends ActionBarActivity implements ChallengesMa
         setContentView(R.layout.activity_challenge);
         this.mChallenge = Challenge.fromBundle(getIntent().getBundleExtra(BUNDLE_CHALLENGE));
         Log.d(TAG, mChallenge.toString());
-        ChallengeManager challengeManager = new ChallengeManager();
-        challengeManager.getChallenge(this.mChallenge.getId(), this);
+
 
         initLayout();
     }
@@ -52,6 +52,9 @@ public class ChallengeActivity extends ActionBarActivity implements ChallengesMa
         this.mResultAdapter = new ResultListAdapter(this, new ArrayList<Result>());
 
         this.mCalsification.setAdapter(this.mResultAdapter);
+
+        this.mChallengeManager = new ChallengeManager();
+        this.mChallengeManager.getChallenge(this.mChallenge.getId(), this);
     }
 
 
@@ -71,6 +74,8 @@ public class ChallengeActivity extends ActionBarActivity implements ChallengesMa
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_suscribe) {
+            Log.d(TAG, "Subscribe");
+            this.mChallengeManager.subscribeChallenge(mChallenge.getId(), MainDrawerActivity.mUser.getHash(),this);
             return true;
         }
 
@@ -84,6 +89,11 @@ public class ChallengeActivity extends ActionBarActivity implements ChallengesMa
     @Override
     public void onCreateChallenge(String result) {
 
+    }
+
+    @Override
+    public void onSubscribe() {
+        this.mChallengeManager.getChallenge(mChallenge.getId(), this);
     }
 
     @Override
