@@ -2,14 +2,20 @@ package com.worldfit.worldfit.activity;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.worldfit.worldfit.R;
 import com.worldfit.worldfit.model.Challenge;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
 public class ChallengeActivity extends ActionBarActivity {
 
+    private static final String TAG = ChallengeActivity.class.getSimpleName();
     public static String BUNDLE_CHALLENGE = "challenge_bunlde";
     public static String ACTION_SHOW = "action_show";
 
@@ -20,6 +26,15 @@ public class ChallengeActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_challenge);
         this.mChallenge = Challenge.fromBundle(getIntent().getBundleExtra(BUNDLE_CHALLENGE));
+        Log.d(TAG, mChallenge.toString());
+        initLayout();
+    }
+
+    private void initLayout() {
+        DateFormat dateformat = new SimpleDateFormat("dd/MM/yyyy");
+        ((TextView) findViewById(R.id.challenge_name)).setText(this.mChallenge.getName());
+        ((TextView)findViewById(R.id.challenge_init_date)).setText(dateformat.format(this.mChallenge.getInit()));
+        ((TextView)findViewById(R.id.challenge_end_date)).setText(dateformat.format(this.mChallenge.getEnd()));
     }
 
 
