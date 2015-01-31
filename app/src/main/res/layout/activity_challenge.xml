@@ -1,111 +1,127 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.worldfit.worldfit.activity.ChallengeActivity">
+    tools:context="com.worldfit.worldfit.activity.ChallengeActivity"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="128dp">
 
-        <android.support.v7.widget.CardView
-            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginRight="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="4dp"
             android:layout_marginBottom="4dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="4dp"
             card_view:cardCornerRadius="4dp">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:fontFamily="sans-serif-light"
-                    android:textStyle="bold"
-                    android:textSize="15sp"
-                    android:ellipsize="end"
-                    android:text="@string/challenge"/>
-
-                <TextView
-                    android:id="@+id/challenge_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:fontFamily="sans-serif-light"
-                    android:textSize="15sp"
-                    android:ellipsize="end"
-                    android:text="@string/challenge"/>
-
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:fontFamily="sans-serif-light"
-                    android:textStyle="bold"
-                    android:textSize="15sp"
-                    android:ellipsize="end"
-                    android:text="@string/challenge_init_date"/>
-
-                <TextView
-                    android:id="@+id/challenge_init_date"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:fontFamily="sans-serif-light"
-                    android:textSize="15sp"
-                    android:ellipsize="end"
-                    android:text="@string/challenge_init_date"/>
-
-            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:fontFamily="sans-serif-light"
-                    android:textStyle="bold"
-                    android:textSize="15sp"
-                    android:ellipsize="end"
-                    android:text="@string/challenge_end_date"/>
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/challenge_end_date"
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="sans-serif-light"
+                        android:padding="10dp"
+                        android:minWidth="100dp"
+                        android:text="@string/challenge"
+                        android:src="@drawable/ic_challenge"
+                         />
+
+                    <TextView
+                        android:id="@+id/challenge_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:layout_gravity="center_vertical"
+                        android:fontFamily="sans-serif-light"
+                        android:padding="10dp"
+                        android:text="@string/challenge"
+                        android:textSize="25sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:fontFamily="sans-serif-light"
-                    android:textSize="15sp"
-                    android:ellipsize="end"
-                    android:text="@string/challenge_end_date"/>
+                    android:orientation="horizontal">
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="sans-serif-light"
+                        android:padding="10dp"
+                        android:minWidth="100dp"
+                        android:text="@string/challenge_init_date"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/challenge_init_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="sans-serif-light"
+                        android:padding="10dp"
+                        android:text="@string/challenge_init_date"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="sans-serif-light"
+                        android:padding="10dp"
+                        android:minWidth="100dp"
+                        android:text="@string/challenge_end_date"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/challenge_end_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="sans-serif-light"
+                        android:padding="10dp"
+                        android:text="@string/challenge_end_date"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
             </LinearLayout>
         </android.support.v7.widget.CardView>
 
     </LinearLayout>
 
+    <ListView
+        android:id="@+id/participants"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></ListView>
 
 
 </LinearLayout>
