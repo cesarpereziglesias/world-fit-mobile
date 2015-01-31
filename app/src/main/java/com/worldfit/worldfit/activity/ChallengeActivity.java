@@ -5,10 +5,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.worldfit.worldfit.R;
+import com.worldfit.worldfit.adapter.ResultListAdapter;
 import com.worldfit.worldfit.model.Challenge;
+import com.worldfit.worldfit.model.Result;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -21,6 +24,9 @@ public class ChallengeActivity extends ActionBarActivity {
 
     private Challenge mChallenge;
 
+    private ListView mCalsification;
+    private ResultListAdapter mResultAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,9 +38,11 @@ public class ChallengeActivity extends ActionBarActivity {
 
     private void initLayout() {
         DateFormat dateformat = new SimpleDateFormat("dd/MM/yyyy");
-        ((TextView) findViewById(R.id.challenge_name)).setText(this.mChallenge.getName());
+        ((TextView)findViewById(R.id.challenge_name)).setText(this.mChallenge.getName());
         ((TextView)findViewById(R.id.challenge_init_date)).setText(dateformat.format(this.mChallenge.getInit()));
         ((TextView)findViewById(R.id.challenge_end_date)).setText(dateformat.format(this.mChallenge.getEnd()));
+        this.mCalsification = new ListView(this);
+
     }
 
 
@@ -53,7 +61,7 @@ public class ChallengeActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_suscribe) {
             return true;
         }
 
