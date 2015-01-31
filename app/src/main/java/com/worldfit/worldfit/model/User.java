@@ -33,12 +33,12 @@ public class User {
     private String mail;
 
     public User(String mail){
-        this(getUser(mail), null, mail);
+        this(null, getUser(mail), mail);
     }
 
     private static String getUser(String mail) {
         Log.d(TAG, mail);
-        Pattern pattern = Pattern.compile("^(.+)@\\.gmail\\.com$");
+        Pattern pattern = Pattern.compile("^(.+)@gmail\\.com$");
         Matcher matcher = pattern.matcher(mail);
         if(matcher.find()) {
             return matcher.group(1);
