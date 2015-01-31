@@ -2,7 +2,6 @@ package com.worldfit.worldfit.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +22,6 @@ public class ChallengeListAdapter extends ArrayAdapter<Challenge> {
 
     private final static String TAG = ChallengeListAdapter.class.getSimpleName();
 
-    private LayoutInflater inflater;
     private Context mContext;
     List<Challenge> mListChallenges;
 
@@ -42,7 +40,7 @@ public class ChallengeListAdapter extends ArrayAdapter<Challenge> {
             rowView = inflater.inflate(R.layout.fragment_challenge_list_item, parent, false);
         }
 
-        ((TextView)rowView.findViewById(R.id.title)).setText(this.mListChallenges.get(position).getName());
+        ((TextView)rowView.findViewById(R.id.challenge_name)).setText(this.mListChallenges.get(position).getName());
 
         initEvents(this.mListChallenges.get(position), rowView);
 
@@ -57,6 +55,7 @@ public class ChallengeListAdapter extends ArrayAdapter<Challenge> {
                 Intent intent = new Intent(mContext, ChallengeActivity.class);
                 intent.setAction(ChallengeActivity.ACTION_SHOW);
                 intent.putExtra(ChallengeActivity.BUNDLE_CHALLENGE, challenge.toBundle());
+                mContext.startActivity(intent);
             }
         });
     }

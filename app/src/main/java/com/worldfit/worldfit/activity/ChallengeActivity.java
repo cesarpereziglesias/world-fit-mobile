@@ -6,16 +6,20 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.worldfit.worldfit.R;
+import com.worldfit.worldfit.model.Challenge;
 
 public class ChallengeActivity extends ActionBarActivity {
 
     public static String BUNDLE_CHALLENGE = "challenge_bunlde";
     public static String ACTION_SHOW = "action_show";
 
+    private Challenge mChallenge;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_challenge);
+        this.mChallenge = Challenge.fromBundle(getIntent().getBundleExtra(BUNDLE_CHALLENGE));
     }
 
 
