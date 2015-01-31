@@ -12,11 +12,15 @@ import com.worldfit.worldfit.R;
 import com.worldfit.worldfit.adapter.ResultListAdapter;
 import com.worldfit.worldfit.model.Challenge;
 import com.worldfit.worldfit.model.Result;
+import com.worldfit.worldfit.services.ChallengeManager;
+import com.worldfit.worldfit.services.listeners.ChallengesManagerListener;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
-public class ChallengeActivity extends ActionBarActivity {
+public class ChallengeActivity extends ActionBarActivity implements ChallengesManagerListener {
 
     private static final String TAG = ChallengeActivity.class.getSimpleName();
     public static String BUNDLE_CHALLENGE = "challenge_bunlde";
@@ -26,6 +30,7 @@ public class ChallengeActivity extends ActionBarActivity {
 
     private ListView mCalsification;
     private ResultListAdapter mResultAdapter;
+    private ChallengeManager mChallengeManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,15 +38,23 @@ public class ChallengeActivity extends ActionBarActivity {
         setContentView(R.layout.activity_challenge);
         this.mChallenge = Challenge.fromBundle(getIntent().getBundleExtra(BUNDLE_CHALLENGE));
         Log.d(TAG, mChallenge.toString());
+
+        this.mChallengeManager = new ChallengeManager();
+        this.mChallengeManager.getChallenge(this.mChallenge.getId(), this);
+
         initLayout();
     }
 
     private void initLayout() {
         DateFormat dateformat = new SimpleDateFormat("dd/MM/yyyy");
         ((TextView)findViewById(R.id.challenge_name)).setText(this.mChallenge.getName());
-        ((TextView)findViewById(R.id.challenge_init_date)).setText(dateformat.format(this.mChallenge.getInit()));
-        ((TextView)findViewById(R.id.challenge_end_date)).setText(dateformat.format(this.mChallenge.getEnd()));
-        this.mCalsification = new ListView(this);
+        ((TextView)findViewById(R.id.challenge_init_date)).setText(this.mChallenge.getInit());
+        ((TextView)findViewById(R.id.challenge_end_date)).setText(this.mChallenge.getEnd());
+        this.mCalsification = (ListView)findViewById(R.id.participants);
+        this.mResultAdapter = new ResultListAdapter(this, new ArrayList<Result>());
+
+        this.mCalsification.setAdapter(this.mResultAdapter);
+
 
     }
 
@@ -62,9 +75,32 @@ public class ChallengeActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_suscribe) {
+            Log.d(TAG, "Subscribe");
+            this.mChallengeManager.subscribeChallenge(mChallenge.getId(), MainDrawerActivity.mUser.getHash(),this);
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onGetChallenges(List<Challenge> challenges) {
+    }
+
+    @Override
+    public void onCreateChallenge(String result) {
+
+    }
+
+    @Override
+    public void onSubscribe() {
+        this.mChallengeManager.getChallenge(mChallenge.getId(), this);
+    }
+
+    @Override
+    public void onGetChallenge(Challenge challenge) {
+        this.mResultAdapter.clear();
+        this.mResultAdapter.addAll(challenge.getResult());
+        this.mResultAdapter.notifyDataSetChanged();
     }
 }

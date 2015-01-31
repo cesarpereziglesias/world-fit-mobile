@@ -7,28 +7,30 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.worldfit.worldfit.R;
 import com.worldfit.worldfit.activity.ChallengeActivity;
 import com.worldfit.worldfit.model.Challenge;
+import com.worldfit.worldfit.model.Result;
 
 import java.util.List;
 
 /**
  * Created by tonimc on 31/1/15.
  */
-public class ResultListAdapter extends ArrayAdapter<Challenge> {
+public class ResultListAdapter extends ArrayAdapter<Result> {
 
     private final static String TAG = ResultListAdapter.class.getSimpleName();
 
     private Context mContext;
-    List<Challenge> mListChallenges;
+    List<Result> mResultList;
 
 
-    public ResultListAdapter(Context context, List<Challenge> values) {
-        super(context,  R.layout.fragment_challenge_list_item, values);
-        this.mListChallenges = values;
+    public ResultListAdapter(Context context, List<Result> values) {
+        super(context,  R.layout.activity_challenge_result_item, values);
+        this.mResultList = values;
         this.mContext = context;
     }
 
@@ -37,32 +39,15 @@ public class ResultListAdapter extends ArrayAdapter<Challenge> {
         View rowView = convertView;
         if(convertView==null) {
             LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            rowView = inflater.inflate(R.layout.fragment_challenge_list_item, parent, false);
+            rowView = inflater.inflate(R.layout.activity_challenge_result_item, parent, false);
         }
 
-        ((TextView)rowView.findViewById(R.id.challenge_name)).setText(this.mListChallenges.get(position).getName());
+        ((TextView)rowView.findViewById(R.id.participant_name)).setText(this.mResultList.get(position).getName() +
+        " (" + this.mResultList.get(position).getValue() + " Steps) ");
 
-        initEvents(this.mListChallenges.get(position), rowView);
+        this.mResultList.get(position).getUser().setAvatar(mContext, (ImageView) rowView.findViewById(R.id.participant_avatar));
 
         return rowView;
     }
 
-    private void initEvents(final Challenge challenge, final View row) {
-        row.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, challenge.toString());
-                Intent intent = new Intent(mContext, ChallengeActivity.class);
-                intent.setAction(ChallengeActivity.ACTION_SHOW);
-                intent.putExtra(ChallengeActivity.BUNDLE_CHALLENGE, challenge.toBundle());
-                mContext.startActivity(intent);
-            }
-        });
-    }
-
-
-    @Override
-    public long getItemId(int position) {
-        return this.mListChallenges.get(position).getId();
-    }
 }

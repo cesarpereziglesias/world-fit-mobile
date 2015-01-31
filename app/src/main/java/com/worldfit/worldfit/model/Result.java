@@ -20,7 +20,17 @@ public class Result {
     }
 
     public String getMail() {
-        return this.user.getMail();
+
+        return this.getUser().getMail();
+    }
+
+    public String getName() { return this.getUser().getName(); }
+
+    public User getUser() {
+        if (this.user == null) {
+            this.user = new User(this.mail);
+        }
+        return this.user;
     }
 
     public void setMail(String mail) {

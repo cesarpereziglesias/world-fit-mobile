@@ -106,4 +106,14 @@ public class ChallengeCreateFragment extends DialogFragment implements Challenge
     public void onCreateChallenge(String result) {
         this.onDestroy();
     }
+
+    @Override
+    public void onSubscribe() {
+
+    }
+
+    @Override
+    public void onGetChallenge(Challenge challenge) {
+
+    }
 }
