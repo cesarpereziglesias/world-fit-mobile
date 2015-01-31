@@ -70,8 +70,7 @@ public class MainDrawerActivity extends MaterialNavigationDrawer implements Mate
     public void run() {
         String email = FitApiWrapper.getInstance(this).getSignedEmail();
         Log.d("Email", email);
-        User user = new User(email);
-        user.saveInLocalShared(this);
+        user.setMail(email);
         UsersManager usersManager = new UsersManager();
         usersManager.createUser(user, this);
     }
@@ -84,6 +83,8 @@ public class MainDrawerActivity extends MaterialNavigationDrawer implements Mate
     @Override
     public void onCreateUser(String userHash) {
         Log.d("Email", userHash);
+        user.setHash(userHash);
+        user.saveInLocalShared(this);
         setUser();
     }
 
