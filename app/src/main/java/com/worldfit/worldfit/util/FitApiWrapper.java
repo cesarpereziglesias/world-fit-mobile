@@ -48,7 +48,7 @@ public class FitApiWrapper  {
 
 
     private static final String TAG = "FitApiWrapper";
-    private static final String DATE_FORMAT = "yyyy-MM-dd";
+    private static final String DATE_FORMAT = "yyyy/MM/dd";
     private static final int REQUEST_OAUTH = 1002;
 
     private Activity mContextActivity;
@@ -174,7 +174,7 @@ public class FitApiWrapper  {
                 cal.get(Calendar.DATE),23, 59, 0);
         long startTime = LastSyncTimestamp;
         long endTime = cal.getTimeInMillis();
-
+        Log.d(TAG, startTime + " " + endTime);
         DataReadRequest readRequest = new DataReadRequest.Builder()
                 .aggregate(DataType.TYPE_STEP_COUNT_DELTA, DataType.AGGREGATE_STEP_COUNT_DELTA)
                 .bucketByTime(1, TimeUnit.DAYS)
