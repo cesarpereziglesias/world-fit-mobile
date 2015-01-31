@@ -2,6 +2,7 @@ package com.worldfit.worldfit.services;
 
 import android.os.AsyncTask;
 
+import com.worldfit.worldfit.model.Activity;
 import com.worldfit.worldfit.model.User;
 import com.worldfit.worldfit.services.listeners.UsersManagerListener;
 
@@ -41,6 +42,25 @@ public class UsersManager extends ServiceManager {
                 super.onPostExecute(userHash);
 
                 listener.onCreateUser(userHash);
+            }
+        }.execute();
+    }
+
+    public void insertActivity(final String hash, final List<Activity> activities, final UsersManagerListener listener) {
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... params) {
+                mService.insertActivity(hash, activities);
+                // TODO: Check if everything was fine
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+
+                super.onPostExecute(aVoid);
+
+                listener.onInsertActivity();
             }
         }.execute();
     }

@@ -78,7 +78,7 @@ public class MainDrawerActivity extends MaterialNavigationDrawer implements Mate
 
     @Override
     public void onGetUsers(List<User> users) {
-
+        // Do nothing
     }
 
     @Override
@@ -93,5 +93,10 @@ public class MainDrawerActivity extends MaterialNavigationDrawer implements Mate
         mAccount.setTitle(user.getName());
         mAccount.setSubTitle(user.getMail());
         notifyAccountDataChanged();
+    }
+
+    @Override
+    public void onInsertActivity() {
+        // TODO
     }
 }

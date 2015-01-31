@@ -71,7 +71,7 @@ public class User {
         );
         if(USER_NODATA.equals(user.hash)) {
             user.name = "Default";
-            user.mail = "tonimc@gmail.com";
+            user.mail = "nouser@worldfit.com";
             user.hash = "default";
             user.saveInLocalShared(context);
         }
