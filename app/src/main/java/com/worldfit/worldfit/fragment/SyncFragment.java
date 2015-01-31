@@ -29,7 +29,7 @@ public class SyncFragment extends Fragment {
 
     private static final String TAG = "SyncFragment";
     private static final String LAST_SYNC_TIMESTAMP_KEY = "LAST_SYNC_TIMESTAMP";
-    private Activity parentActivity;
+    private Activity mParentActivity;
 
     public static SyncFragment newInstance(String param1, String param2) {
         SyncFragment fragment = new SyncFragment();
@@ -61,7 +61,7 @@ public class SyncFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        parentActivity = activity;
+        mParentActivity = activity;
     }
 
 
@@ -72,9 +72,9 @@ public class SyncFragment extends Fragment {
         long oneMonthBackFromNowTimestamp =  calendar.getTimeInMillis();
 
         long lastSyncTimestamp = SimpleSharedPreferences
-                .getSimpleSharedPreference(parentActivity)
+                .getSimpleSharedPreference(mParentActivity)
                 .read(LAST_SYNC_TIMESTAMP_KEY, oneMonthBackFromNowTimestamp);
-        HashMap<String, Integer> lastUserStepsData = FitApiWrapper.getInstance(parentActivity).
+        HashMap<String, Integer> lastUserStepsData = FitApiWrapper.getInstance(mParentActivity).
                 retrieveUserStepsStartingFrom(lastSyncTimestamp);
 
 
