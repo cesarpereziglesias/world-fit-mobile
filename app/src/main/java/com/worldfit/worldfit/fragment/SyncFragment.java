@@ -134,6 +134,11 @@ public class SyncFragment extends Fragment implements Runnable, ReceiverStepData
     }
 
     @Override
+    public void onGetUserActivities(List<com.worldfit.worldfit.model.Activity> activities) {
+
+    }
+
+    @Override
     public void onInsertActivity() {
 
     }
