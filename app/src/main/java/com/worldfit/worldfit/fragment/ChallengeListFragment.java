@@ -1,12 +1,8 @@
 package com.worldfit.worldfit.fragment;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.DialogFragment;
 import android.app.Fragment;
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,8 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.worldfit.worldfit.R;
 import com.worldfit.worldfit.adapter.ChallengeListAdapter;
+import com.worldfit.worldfit.handler.CreateChallengeDialogHandler;
 import com.worldfit.worldfit.model.Challenge;
 import com.worldfit.worldfit.services.ChallengeManager;
 import com.worldfit.worldfit.services.listeners.ChallengesManagerListener;
@@ -38,6 +36,7 @@ public class ChallengeListFragment extends Fragment implements ChallengesManager
     private ListView mListChallenge;
     private ChallengeListAdapter mChallengeAdapter;
     private List<Challenge> mChallenges = new ArrayList<Challenge>();
+    private ChallengeManager mChallengeManager = new ChallengeManager();
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -67,8 +66,7 @@ public class ChallengeListFragment extends Fragment implements ChallengesManager
 
     private void setup() {
         this.mListChallenge.setAdapter(this.mChallengeAdapter);
-        ChallengeManager challengeManager = new ChallengeManager();
-        challengeManager.getChallengesList(this);
+        mChallengeManager.getChallengesList(this);
     }
 
     private void initEvents() {
@@ -116,16 +114,38 @@ public class ChallengeListFragment extends Fragment implements ChallengesManager
         inflater.inflate(R.menu.menu_challenge_list, menu);
     }
 
+    private ChallengeCreatedListener mChallengeCreatedListener = new ChallengeCreatedListener() {
+        @Override
+        public void challengeCreated() {
+            mChallengeManager.getChallengesList(ChallengeListFragment.this);
+        }
+    };
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // handle item selection
         switch (item.getItemId()) {
             case R.id.action_subscribe:
-                Log.d(TAG, "wwwwwoot");
+                boolean wrapInScrollView = true;
+                new MaterialDialog.Builder(mParentActivity)
+                        .title(R.string.new_challenge)
+                        .customView(R.layout.create_challenge, wrapInScrollView)
+                        .positiveText(R.string.create)
+                        .negativeText(android.R.string.cancel)
+                        .positiveColorRes(R.color.material_deep_teal_500)
+                        .negativeColorRes(R.color.material_deep_teal_200)
+                        .callback(new CreateChallengeDialogHandler(mChallengeCreatedListener))
+                        .build()
+                        .show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    public interface ChallengeCreatedListener {
+        public void challengeCreated();
+    }
+
 
 }

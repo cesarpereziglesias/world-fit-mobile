@@ -18,5 +18,6 @@
     <string name="challenge_name">Challenge name</string>
     <string name="create">Create</string>
     <string name="cancel">Cancel</string>
+    <string name="new_challenge">New challenge</string>
 
 </resources>
