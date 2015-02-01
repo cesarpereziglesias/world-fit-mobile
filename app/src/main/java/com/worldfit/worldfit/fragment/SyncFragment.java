@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.worldfit.worldfit.R;
 import com.worldfit.worldfit.model.User;
 import com.worldfit.worldfit.services.UsersManager;
@@ -23,7 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 
 
-public class SyncFragment extends Fragment implements Runnable, ReceiverStepData, UsersManagerListener {
+public class SyncFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks, ReceiverStepData, UsersManagerListener {
 
     private static final String TAG = "SyncFragment";
     private static final String LAST_SYNC_TIMESTAMP_KEY = "LAST_SYNC_TIMESTAMP";
@@ -65,21 +66,17 @@ public class SyncFragment extends Fragment implements Runnable, ReceiverStepData
         mSyncButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FitApiWrapper.getInstance(mParentActivity).connect(SyncFragment.this);
+                FitApiWrapper.getInstance()
+                        .registerConnectionCallBack(SyncFragment.this)
+                        .connect();
             }
         });
     }
 
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        mParentActivity = activity;
-    }
-
 
     @Override
-    public void run() {
+    public void onConnected(Bundle bundle) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
         calendar.add(Calendar.MONTH, -1);
@@ -90,10 +87,21 @@ public class SyncFragment extends Fragment implements Runnable, ReceiverStepData
         //        .read(LAST_SYNC_TIMESTAMP_KEY, oneMonthBackFromNowTimestamp);
 
 
-        FitApiWrapper.getInstance(mParentActivity).
+        FitApiWrapper.getInstance().
                 sendToReceiverUserStepsStartingFrom(oneMonthBackFromNowTimestamp, this);
 
+    }
 
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        mParentActivity = activity;
     }
 
     @Override

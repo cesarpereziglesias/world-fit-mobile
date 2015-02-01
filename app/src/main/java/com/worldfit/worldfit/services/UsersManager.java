@@ -7,6 +7,7 @@ import com.worldfit.worldfit.model.Activity;
 import com.worldfit.worldfit.model.User;
 import com.worldfit.worldfit.services.listeners.UsersManagerListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UsersManager extends ServiceManager {
@@ -54,7 +55,11 @@ public class UsersManager extends ServiceManager {
             @Override
             protected List<Activity> doInBackground(Void... params) {
                 Log.d(TAG, hash);
-                return mService.getUserActivities(hash);
+                try {
+                    return mService.getUserActivities(hash);
+                }catch(Exception e){
+                    return new ArrayList<Activity>();
+                }
             }
 
             @Override

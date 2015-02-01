@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
 
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.worldfit.worldfit.R;
 import com.worldfit.worldfit.fragment.ChallengeListFragment;
 import com.worldfit.worldfit.fragment.MainFragment;
@@ -22,7 +23,7 @@ import it.neokree.materialnavigationdrawer.elements.MaterialAccount;
 import it.neokree.materialnavigationdrawer.elements.listeners.MaterialAccountListener;
 
 
-public class MainDrawerActivity extends MaterialNavigationDrawer implements MaterialAccountListener, Runnable, UsersManagerListener {
+public class MainDrawerActivity extends MaterialNavigationDrawer implements MaterialAccountListener, GoogleApiClient.ConnectionCallbacks, UsersManagerListener {
 
     public static User mUser;
     private MaterialAccount mAccount;
@@ -39,7 +40,10 @@ public class MainDrawerActivity extends MaterialNavigationDrawer implements Mate
         this.mUser.setAvatar(this, (ImageView) findViewById(R.id.user_photo));
         this.addAccount(mAccount);
 
-        FitApiWrapper.getInstance(this).connect(this);
+        FitApiWrapper.getInstance()
+                .attachContextActivity(this)
+                .registerConnectionCallBack(this)
+                .connect();
 
         // create sections
         this.addSection(newSection(getString(R.string.resume), R.drawable.ic_avatar_default, new MainFragment()));
@@ -66,18 +70,13 @@ public class MainDrawerActivity extends MaterialNavigationDrawer implements Mate
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-            FitApiWrapper.getInstance(this).connect(this);
+            FitApiWrapper.getInstance()
+                    .attachContextActivity(this)
+                    .registerConnectionCallBack(this)
+                    .connect();
         }
     }
 
-    @Override
-    public void run() {
-        String email = FitApiWrapper.getInstance(this).getSignedEmail();
-        Log.d("Email", email);
-        mUser = new User(email);
-        UsersManager usersManager = new UsersManager();
-        usersManager.createUser(mUser, this);
-    }
 
     @Override
     public void onGetUsers(List<User> users) {
@@ -104,10 +103,25 @@ public class MainDrawerActivity extends MaterialNavigationDrawer implements Mate
         notifyAccountDataChanged();
 
         mUser.setAvatar(this, (ImageView) findViewById(R.id.user_photo));
+       this.setFragment(new MainFragment(), getString(R.string.resume));
     }
 
     @Override
     public void onInsertActivity() {
         // TODO
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        String email = FitApiWrapper.getInstance().getSignedEmail();
+        Log.d("Email", email);
+        mUser = new User(email);
+        UsersManager usersManager = new UsersManager();
+        usersManager.createUser(mUser, this);
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
     }
 }

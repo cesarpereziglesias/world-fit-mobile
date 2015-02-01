@@ -23,6 +23,7 @@ import com.google.android.gms.plus.Plus;
 import com.worldfit.worldfit.fragment.ReceiverStepData;
 import com.worldfit.worldfit.fragment.SyncFragment;
 
+import java.sql.Connection;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -39,9 +40,9 @@ public class FitApiWrapper  {
     private static FitApiWrapper mInstance;
     private Runnable mConnectedCallBack;
 
-    public static FitApiWrapper getInstance(Activity contextActivity) {
+    public static FitApiWrapper getInstance() {
         if(mInstance == null) {
-            mInstance = new FitApiWrapper(contextActivity);
+            mInstance = new FitApiWrapper();
         }
         return mInstance;
     }
@@ -56,9 +57,7 @@ public class FitApiWrapper  {
     private boolean mAuthInProgress;
     private SimpleDateFormat mDateFormat = new SimpleDateFormat(DATE_FORMAT);
 
-    private FitApiWrapper(Activity contextActivity){
-        this.mContextActivity = contextActivity;
-        buildFitnessClient();
+    private FitApiWrapper(){
     }
 
     public void sendToReceiverUserStepsStartingFrom(long beginStepsTimestamp,final ReceiverStepData receiverStepData){
@@ -105,6 +104,13 @@ public class FitApiWrapper  {
      *  can address. Examples of this include the user never having signed in before, or
      *  having multiple accounts on the device and needing to specify which account to use, etc.
      */
+
+    public FitApiWrapper attachContextActivity(Activity contextActivity){
+        this.mContextActivity = contextActivity;
+        buildFitnessClient();
+        return mInstance;
+    }
+
     private void buildFitnessClient() {
         // Create the Google API Client
         mGoogleApiClient = new GoogleApiClient.Builder(mContextActivity.getApplicationContext())
@@ -112,25 +118,6 @@ public class FitApiWrapper  {
                 .addApi(Plus.API)
                 .addScope(Plus.SCOPE_PLUS_LOGIN)
                 .addScope(new Scope(Scopes.FITNESS_ACTIVITY_READ_WRITE))
-                .addConnectionCallbacks(
-                        new GoogleApiClient.ConnectionCallbacks() {
-                            @Override
-                            public void onConnected(Bundle bundle) {
-                                mConnectedCallBack.run();
-                            }
-
-                            @Override
-                            public void onConnectionSuspended(int i) {
-                                // If your connection to the sensor gets lost at some point,
-                                // you'll be able to determine the reason and react to it here.
-                                if (i == GoogleApiClient.ConnectionCallbacks.CAUSE_NETWORK_LOST) {
-                                    Log.i(TAG, "Connection lost.  Cause: Network Lost.");
-                                } else if (i == GoogleApiClient.ConnectionCallbacks.CAUSE_SERVICE_DISCONNECTED) {
-                                    Log.i(TAG, "Connection lost.  Reason: Service Disconnected");
-                                }
-                            }
-                        }
-                )
                 .addOnConnectionFailedListener(
                         new GoogleApiClient.OnConnectionFailedListener() {
                             // Called whenever the API client fails to connect.
@@ -185,14 +172,19 @@ public class FitApiWrapper  {
     }
 
 
-    public void connect(Runnable callback) {
-        this.mConnectedCallBack = callback;
-        if(mGoogleApiClient.isConnected()){
-            this.mConnectedCallBack.run();
-        }else{
-            this.mGoogleApiClient.connect();
-        }
+    public void connect() {
+        this.mGoogleApiClient.connect();
     }
+
+    public void disconect(){
+        this.mGoogleApiClient.disconnect();
+    }
+
+    public FitApiWrapper registerConnectionCallBack(GoogleApiClient.ConnectionCallbacks connectionCallbacks){
+        this.mGoogleApiClient.registerConnectionCallbacks(connectionCallbacks);
+        return mInstance;
+    }
+
 
     public String getSignedEmail() {
         return Plus.AccountApi.getAccountName(mGoogleApiClient);
