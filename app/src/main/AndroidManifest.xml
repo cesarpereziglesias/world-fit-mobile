@@ -18,7 +18,7 @@
         <activity
             android:name=".activity.MainDrawerActivity"
             android:label="@string/title_activity_main_drawer"
-            android:theme="@style/MainDrawer" >
+            android:theme="@style/MainDrawer" android:configChanges="orientation|keyboardHidden|keyboard" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
