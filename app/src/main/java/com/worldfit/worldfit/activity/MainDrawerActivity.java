@@ -25,6 +25,7 @@ import it.neokree.materialnavigationdrawer.elements.listeners.MaterialAccountLis
 
 public class MainDrawerActivity extends MaterialNavigationDrawer implements MaterialAccountListener, GoogleApiClient.ConnectionCallbacks, UsersManagerListener {
 
+    private static final String TAG = MainDrawerActivity.class.getName();
     public static User mUser;
     private MaterialAccount mAccount;
 
@@ -114,7 +115,13 @@ public class MainDrawerActivity extends MaterialNavigationDrawer implements Mate
     @Override
     public void onConnected(Bundle bundle) {
         String email = FitApiWrapper.getInstance().getSignedEmail();
-        Log.d("Email", email);
+        User testUser = User.readSharedUser(this);
+
+        if(testUser.getMail().equals(email)){
+            Log.d(TAG, "Registered user");
+            return;
+        }
+
         mUser = new User(email);
         UsersManager usersManager = new UsersManager();
         usersManager.createUser(mUser, this);
