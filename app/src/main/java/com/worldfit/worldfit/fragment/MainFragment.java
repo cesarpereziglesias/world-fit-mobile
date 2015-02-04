@@ -1,6 +1,7 @@
 package com.worldfit.worldfit.fragment;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
@@ -11,12 +12,15 @@ import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.worldfit.worldfit.R;
 import com.worldfit.worldfit.model.User;
 import com.worldfit.worldfit.services.UsersManager;
 import com.worldfit.worldfit.services.listeners.UsersManagerListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class MainFragment extends Fragment implements UsersManagerListener {
@@ -24,6 +28,11 @@ public class MainFragment extends Fragment implements UsersManagerListener {
     private static final String TAG = MainFragment.class.getName();
     private Activity mParentActivity;
     private BarChart mBarChart;
+    private static int[] colorChart = new int[]{
+            Color.rgb(205, 220, 57),
+            Color.rgb(255, 234, 59),
+            Color.rgb(139, 195, 74),
+            Color.rgb(76, 175, 80)};
 
 
     public MainFragment() {
@@ -81,16 +90,31 @@ public class MainFragment extends Fragment implements UsersManagerListener {
             valsComp1.add(new BarEntry(activity.getValue(), i++));
             xVals.add(date.substring(date.length()-2));
         }
-        BarDataSet barDataSet = new BarDataSet(valsComp1, "Steps/Day");
+        BarDataSet barDataSet = new BarDataSet(valsComp1, "");
 
+        shuffleArray(colorChart);
+        barDataSet.setColors(colorChart);
         BarData barData = new BarData(xVals, barDataSet);
 
         mBarChart.setData(barData);
-
+        mBarChart.setDescription("Steps/Day");
+        mBarChart.setDrawLegend(false);
         mBarChart.setVisibility(View.VISIBLE);
         mBarChart.animateY(500);
     }
 
+    public static void shuffleArray(int[] array) {
+        List<Integer> list = new ArrayList<>();
+        for (int i : array) {
+            list.add(i);
+        }
+
+        Collections.shuffle(list);
+
+        for (int i = 0; i < list.size(); i++) {
+            array[i] = list.get(i);
+        }
+    }
     @Override
     public void onInsertActivity() {
 
