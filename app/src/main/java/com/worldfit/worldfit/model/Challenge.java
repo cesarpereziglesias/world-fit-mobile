@@ -114,7 +114,7 @@ public class Challenge {
         challenge.setOwner(bundle.getString(CHALLENGE_OWNER));
         challenge.setChallenge_type(bundle.getString(CHALLENGE_TYPE));
         challenge.setInit(bundle.getString(CHALLENGE_DATE_INIT));
-        challenge.setEnd(bundle.getString(CHALLENGE_DATE_INIT));
+        challenge.setEnd(bundle.getString(CHALLENGE_DATE_END));
         return challenge;
     }
 
