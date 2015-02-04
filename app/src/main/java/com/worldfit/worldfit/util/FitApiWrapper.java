@@ -73,7 +73,8 @@ public class FitApiWrapper  {
                         //fit query procedure
                         DataSet dataset = bucket.getDataSets().get(0);
                         DataPoint datapoint = dataset.getDataPoints().get(0);
-                        String date = mDateFormat.format(datapoint.getStartTime(TimeUnit.MILLISECONDS));
+                        String date = mDateFormat.format(datapoint.getEndTime(TimeUnit.MILLISECONDS));
+
                         int value = datapoint.getValue(Field.FIELD_STEPS).asInt();
                         userStepsDataGroupedByDate.put(date, value);
                     }catch (Exception e){
